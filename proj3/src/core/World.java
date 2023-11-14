@@ -3,16 +3,16 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class World {
     private int width;
     private int height;
-    // build your own world!
     private TETile[][] tiles;
 
-    private HashMap<Integer, int[]> roomMap;
+    private HashMap<Integer, Room> roomMap;
     private int roomCounter = 0;
 
     //setting custom tiles
@@ -37,10 +37,12 @@ public class World {
         }
     }
 
+    //temporary seed until can generate
     private static final long SEED = 23758378;
     //old seed: 23758373
     private static final Random RANDOM = new Random(SEED);
 
+    //WORLD CONSTRUCTOR
     public World(int width, int height) {
         this.width = width;
         this.height = height;
@@ -56,14 +58,15 @@ public class World {
 
         //make hashmap of rooms
         roomMap = new HashMap<>();
-        //populate room hashmap
-        //MAYBE UNNECESSARY
-        for (int x = 0; x < roomNumbers; x++) {
-            roomMap.put(roomNumbers, new int[4]);
-        }
 
+        //add random rooms
         for (int i = 0; i < roomNumbers; i++) {
             makeRandomRooms();
+        }
+
+        //add hallways
+        for (int i = 0; i < (roomNumbers - 2); i++){
+            MakeHallways(roomMap.get(6), roomMap.get(i + 1));
         }
 
         //tiles[37][7] = Tileset.LOCKED_DOOR;
@@ -73,11 +76,12 @@ public class World {
         return tiles;
     }
 
+    //MAKE A SINGLE RANDOM ROOM IN A RANDOM LOCATION ON THE MAP.
     private void makeRandomRooms() {
 
-        int roomHeight = RANDOM.nextInt(8);
+        int roomHeight = RANDOM.nextInt(6);
         roomHeight += 3;
-        int roomWidth = RANDOM.nextInt(5);
+        int roomWidth = RANDOM.nextInt(3);
         roomWidth += 3;
         int roomStartHeight = RANDOM.nextInt(height);
         int roomStartWidth = RANDOM.nextInt(width);
@@ -156,18 +160,18 @@ public class World {
 
         }
 
+        Room room = new Room(roomCounter, bottomLeftX, bottomLeftY, roomWidth, roomHeight);
+        roomMap.put(roomCounter, room);
+        roomCounter += 1;
         //add to room hashmap
         //DELETE - OBSOLETE
-        int[] roomInfo = new int[4];
-        roomInfo[0] = roomStartWidth;
-        roomInfo[1] = roomStartHeight;
-        roomInfo[2] = roomWidth;
-        roomInfo[3] = roomHeight;
-        roomMap.put(roomCounter, roomInfo);
+//        int[] roomInfo = new int[4];
+//        roomInfo[0] = roomStartWidth;
+//        roomInfo[1] = roomStartHeight;
+//        roomInfo[2] = roomWidth;
+//        roomInfo[3] = roomHeight;
 
-        //make the room object use with setFloor method
-        Room room = new Room(roomCounter, bottomLeftX, bottomLeftY, roomWidth, roomHeight);
-        roomCounter += 1;
+        //populate room with floors
         setFloor(room);
     }
 
@@ -214,6 +218,172 @@ public class World {
                 if (temp41 == wall && temp42 == floor && temp43 != nothing) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    //in the return array list, the first integer is 1 if the hallway is horizontal, or -1 if it's vertical
+    //the second integer is the lower bound in the range of overlapping region
+    //the third integer is the upper bound in the range of overlapping region
+    private int[] boolMakeHallways(Room room1, Room room2) {
+        int[] returnArray = new int[3];
+        //HORIZONTALLY
+        //find smaller of the two ranges
+        Room smallerRoom;
+        Room biggerRoom;
+        if (room1.height > room2.height) {
+            smallerRoom = room2;
+            biggerRoom = room1;
+
+        } else {
+            smallerRoom = room1;
+            biggerRoom = room2;
+        }
+
+        //checking if valid overlapping region of the vertical walls
+        for (int i = smallerRoom.startY; i < smallerRoom.startY + smallerRoom.height; i++) {
+            if (i < (biggerRoom.startY + biggerRoom.height) && i >= (biggerRoom.startY)) {
+                //setting return array value indicating horizontal
+                returnArray[0] = 1;
+
+                //check relative y position of two rooms
+                //FIRST CASE: bigger room LOWER than smaller room
+                if (smallerRoom.startY > biggerRoom.startY && biggerRoom.startY + biggerRoom.height < smallerRoom.startY + smallerRoom.height) {
+                    if (smallerRoom.startY + 1 < height) {
+                        returnArray[1] = smallerRoom.startY + 1;
+                    } else {
+                        return null;
+                    }
+
+                    if (biggerRoom.startY + biggerRoom.height - 1 >= 0) {
+                        returnArray[2] = biggerRoom.startY + biggerRoom.height - 1;
+                    } else {
+                        return null;
+                    }
+                }
+
+                //SECOND CASE: bigger room HIGHER than smaller room
+                else if (smallerRoom.startY < biggerRoom.startY && biggerRoom.startY + biggerRoom.height > smallerRoom.startY + smallerRoom.height) {
+                    if (biggerRoom.startY + 1 < height) {
+                        returnArray[1] = biggerRoom.startY + 1;
+                    } else {
+                        return null;
+                    }
+                    if (smallerRoom.startY + smallerRoom.height - 1 >= 0) {
+                        returnArray[2] = smallerRoom.startY + smallerRoom.height - 1;
+                    } else {
+                        return null;
+                    }
+                }
+                //THIRD CASE: smaller room IN BETWEEN Bigger Room
+                else {
+                    if (smallerRoom.startY + 1 < height) {
+                        returnArray[1] = smallerRoom.startY + 1;
+                    } else {
+                        return null;
+                    }
+                    if (smallerRoom.startY + smallerRoom.height - 1 >= 0) {
+                        returnArray[2] = smallerRoom.startY + smallerRoom.height - 1;
+                    } else {
+                        return null;
+                    }
+                }
+                return returnArray;
+            }
+
+        }
+
+        //VERTICAL
+        //find smaller of the two ranges
+        if (room1.width > room2.width) {
+            smallerRoom = room2;
+            biggerRoom = room1;
+
+        } else {
+            smallerRoom = room1;
+            biggerRoom = room2;
+        }
+
+        for (int i = smallerRoom.startX; i < smallerRoom.startX + smallerRoom.width; i++) {
+            if (i < (biggerRoom.startX + biggerRoom.width) && i >= (biggerRoom.startX)) {
+
+                //setting return array value indicating horizontal
+                returnArray[0] = -1;
+
+                //TODO: FILL LATER WITH HORIZONTAL IF STATEMENTS
+            }
+        }
+
+        return null;
+    }
+    private void MakeHallways(Room room1, Room room2) {
+
+        int[] roomInfo = boolMakeHallways(room1, room2);
+
+        //if roomInfo returned nothing, there is no valid hallway between these 2 rooms, so return
+        if (roomInfo == null) {
+            return;
+        }
+
+        int lowerBound = roomInfo[1];
+        int upperBound = roomInfo[2];
+        if (upperBound - lowerBound <= 0) {
+            return;
+        }
+        //HORIZONTAL
+        if (roomInfo[0] == 1) {
+
+            //check if room 1 is to the left of room 2, and vice versa
+            Room leftRoom;
+            Room rightRoom;
+
+            if (room1.startX < room2.startX) {
+                leftRoom = room1;
+                rightRoom = room2;
+            } else {
+                leftRoom = room2;
+                rightRoom = room1;
+            }
+
+            //choose random starting y position for the middle of the hallway within the valid range
+            int hallStartY = RANDOM.nextInt(upperBound - lowerBound);
+            hallStartY += lowerBound;
+
+            if (checkAdjHallwayY(leftRoom, rightRoom, hallStartY)) {
+                return;
+                //not make the hallway
+                //shift the hallway up or down so it's not touching
+            }
+
+            for (int i = leftRoom.startX + leftRoom.width; i <= rightRoom.startX; i++) {
+
+
+                tiles[i][hallStartY - 1] = Tileset.WALL;
+                tiles[i][hallStartY] = Tileset.FLOOR;
+                tiles[i][hallStartY + 1] = Tileset.WALL;
+            }
+        }
+//        else if (boolMakeHallways(room1, room2) == "y") {
+//            for (int j = 0; j < vertDistBetweenRooms; j++) {
+//                if (room1.startY + room1.height + j == height - 1) {
+//                    break;
+//                }
+//                tiles[room1.startY][room1.startY + room1.height + j] = Tileset.WALL;
+//                tiles[room2.startY][room2.startY + room2.height + j] = Tileset.WALL;
+//            }
+//        }
+    }
+
+    private boolean checkAdjHallwayY(Room leftRoom, Room rightRoom, int hallStartY) {
+        //if hallway right above or below
+        if (hallStartY + 1 < height && hallStartY + 2 < height && hallStartY + 3 < height) {
+            if (tiles[leftRoom.startX + 2][hallStartY + 1] == Tileset.WALL && tiles[leftRoom.startX + 2][hallStartY + 2] == Tileset.FLOOR && tiles[leftRoom.startX + 2][hallStartY + 3] == Tileset.WALL) {
+                return true;
+            }
+        } else if (hallStartY - 1 >= 0 && hallStartY - 2 >= 0 && hallStartY - 3 >= 0) {
+            if (tiles[leftRoom.startX + 2][hallStartY - 1] == Tileset.WALL && tiles[leftRoom.startX + 2][hallStartY - 2] == Tileset.FLOOR && tiles[leftRoom.startX + 2][hallStartY - 3] == Tileset.WALL) {
+                return true;
             }
         }
         return false;
