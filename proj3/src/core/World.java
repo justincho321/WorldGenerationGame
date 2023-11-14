@@ -1,6 +1,5 @@
 package core;
 
-import org.junit.jupiter.api.ClassOrderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -15,6 +14,11 @@ public class World {
 
     private HashMap<Integer, int[]> roomMap;
     private int roomCounter = 0;
+
+    //setting custom tiles
+    private TETile wall = Tileset.CUSTOM_WALL;
+    private TETile floor = Tileset.CUSTOM_FLOOR;
+    private TETile nothing = Tileset.CUSTOM_NOTHING;
 
     //object representation of a room
     private class Room {
@@ -36,13 +40,14 @@ public class World {
     private static final long SEED = 23758378;
     //old seed: 23758373
     private static final Random RANDOM = new Random(SEED);
+
     public World(int width, int height) {
         this.width = width;
         this.height = height;
         tiles = new TETile[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                tiles[x][y] = Tileset.NOTHING;
+                tiles[x][y] = nothing;
             }
         }
         //populate and make randomized world helper method
@@ -60,15 +65,19 @@ public class World {
         for (int i = 0; i < roomNumbers; i++) {
             makeRandomRooms();
         }
+
+        //tiles[37][7] = Tileset.LOCKED_DOOR;
     }
+
     public TETile[][] getTiles() {
         return tiles;
     }
+
     private void makeRandomRooms() {
 
         int roomHeight = RANDOM.nextInt(8);
         roomHeight += 3;
-        int roomWidth = RANDOM.nextInt(10);
+        int roomWidth = RANDOM.nextInt(5);
         roomWidth += 3;
         int roomStartHeight = RANDOM.nextInt(height);
         int roomStartWidth = RANDOM.nextInt(width);
@@ -99,29 +108,56 @@ public class World {
         //makes the horizontal floor and ceiling
         for (int j = 0; j <= roomWidth; j++) {
             //if we iterate past the boundary width! Break the loop
+            int firstX = roomStartWidth + (j * multiplier1);
+            int firstY = roomStartHeight;
             TETile first = tiles[roomStartWidth + (j * multiplier1)][roomStartHeight];
+
+            int secondX = roomStartWidth + (j * multiplier1);
+            int secondY = ceiling;
             TETile second = tiles[roomStartWidth + (j * multiplier1)][ceiling];
-            if (first != Tileset.FLOOR) {
-                tiles[roomStartWidth + (j * multiplier1)][roomStartHeight] = Tileset.WALL;
+
+            if (checkMidWallCase(firstX, firstY, "y") == true) {
+                tiles[roomStartWidth + (j * multiplier1)][roomStartHeight] = floor;
+            } else if (first != floor) {
+                tiles[roomStartWidth + (j * multiplier1)][roomStartHeight] = wall;
             }
-            if (second != Tileset.FLOOR) {
-                tiles[roomStartWidth + (j * multiplier1)][ceiling] = Tileset.WALL;
+
+            if (checkMidWallCase(secondX, secondY, "y") == true) {
+                tiles[roomStartWidth + (j * multiplier1)][ceiling] = floor;
+            } else if (second != floor) {
+                tiles[roomStartWidth + (j * multiplier1)][ceiling] = wall;
             }
         }
         //makes the vertical walls
         for (int k = 0; k <= roomHeight; k++) {
             //if we iterate past the boundary height! Break the loop
-            TETile third = tiles[roomStartWidth][roomStartHeight + (k * multiplier2)];
-            TETile fourth = tiles[oppWall][roomStartHeight + (k * multiplier2)];
-            if (third != Tileset.FLOOR) {
-                tiles[roomStartWidth][roomStartHeight + (k * multiplier2)] = Tileset.WALL;
+            int thirdX = roomStartWidth;
+            int thirdY = roomStartHeight + (k * multiplier2);
+            TETile third = tiles[thirdX][thirdY];
+
+            int fourthX = oppWall;
+            int fourthY = roomStartHeight + (k * multiplier2);
+            TETile fourth = tiles[fourthX][fourthY];
+
+            //third case
+            if (checkMidWallCase(thirdX, thirdY, "x") == true) {
+                tiles[roomStartWidth][roomStartHeight + (k * multiplier2)] = floor;
+            } else if (third != floor) {
+                tiles[roomStartWidth][roomStartHeight + (k * multiplier2)] = wall;
             }
-            if (fourth != Tileset.FLOOR) {
-                tiles[oppWall][roomStartHeight + (k * multiplier2)] = Tileset.WALL;
+
+            //fourth case
+            if (checkMidWallCase(fourthX, fourthY, "x") == true) {
+                tiles[oppWall][roomStartHeight + (k * multiplier2)] = floor;
+            } else if (fourth != floor) {
+                tiles[oppWall][roomStartHeight + (k * multiplier2)] = wall;
             }
+
+
         }
 
         //add to room hashmap
+        //DELETE - OBSOLETE
         int[] roomInfo = new int[4];
         roomInfo[0] = roomStartWidth;
         roomInfo[1] = roomStartHeight;
@@ -138,31 +174,49 @@ public class World {
     private void setFloor(Room room) {
         for (int i = room.startX + 1; i < (room.startX + room.width); i++) {
             for (int j = room.startY + 1; j < (room.startY + room.height); j++) {
-                tiles[i][j] = Tileset.FLOOR;
+                tiles[i][j] = floor;
             }
         }
     }
-    private boolean checkMidWallCase(int x, int y) {
-        TETile temp1 = tiles[x + 1][y];
-        TETile temp2 = tiles[x + 2][y];
-        TETile temp3 = tiles[x - 1][y];
-        TETile temp4 = tiles[x - 2][y];
-        TETile temp5 = tiles[x][y + 1];
-        TETile temp6 = tiles[x][y + 2];
-        TETile temp7 = tiles[x][y - 1];
-        TETile temp8 = tiles[x][y - 2];
-        if (temp1 != null && temp2 != null && temp1 == Tileset.WALL && temp2 == Tileset.FLOOR) {
-            return true;
-        } else if (temp3 != null && temp4 != null && temp3 == Tileset.WALL && temp4 == Tileset.FLOOR) {
-            return true;
-        } else if (temp5 != null && temp6 != null && temp5 == Tileset.WALL && temp6 == Tileset.FLOOR) {
-            return true;
-        } else if (temp7 != null && temp8 != null && temp7 == Tileset.WALL && temp8 == Tileset.FLOOR) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
+    private boolean checkMidWallCase(int x, int y, String direction) {
+        if (direction == "x") {
+            if ((x - 1) >= 0 && (x + 1) < width) {
+                TETile temp11 = tiles[x][y];
+                TETile temp12 = tiles[x + 1][y];
+                TETile temp13 = tiles[x - 1][y];
+                if (temp11 == wall && temp12 == floor && temp13 != nothing) {
+                    return true;
+                }
+            }
+            if ((x + 1) < width && (x - 1) >= 0) {
+                TETile temp21 = tiles[x][y];
+                TETile temp22 = tiles[x - 1][y];
+                TETile temp23 = tiles[x + 1][y];
+                if (temp21 == wall && temp22 == floor && temp23 != nothing) {
+                    return true;
+                }
+            }
+        }
+        else if (direction == "y") {
+            if ((y - 1) >= 0 && (y + 1) < height) {
+                TETile temp31 = tiles[x][y];
+                TETile temp32 = tiles[x][y + 1];
+                TETile temp33 = tiles[x][y - 1];
+                if (temp31 == wall && temp32 == floor && temp33 != nothing) {
+                    return true;
+                }
+            }
+            if ((y + 1) < height && (y - 1) >= 0) {
+                TETile temp41 = tiles[x][y];
+                TETile temp42 = tiles[x][y - 1];
+                TETile temp43 = tiles[x][y + 1];
+                if (temp41 == wall && temp42 == floor && temp43 != nothing) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
