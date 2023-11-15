@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class World {
-    private int width;
-    private int height;
+    private static int width = 60;
+    private static int height = 30;
     private TETile[][] tiles;
 
     private HashMap<Integer, Room> roomMap;
@@ -38,20 +38,23 @@ public class World {
     }
 
     //temporary seed until can generate
-    private static final long SEED = 23758378;
+    private long SEED = 23758378;
     //old seed: 23758373
-    private static final Random RANDOM = new Random(SEED);
+    private Random RANDOM = new Random(SEED);
+    public TETile[][] returnWorld(){
+        return tiles;
+    }
 
     //WORLD CONSTRUCTOR
-    public World(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public World(long SEED) { //eugenia: world should take in the seed that puts out random rooms; NO static final
+        this.RANDOM = new Random(SEED);
         tiles = new TETile[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 tiles[x][y] = nothing;
             }
         }
+
         //populate and make randomized world helper method
         int roomNumbers = RANDOM.nextInt(10); // there should be 10 to 20 random rom
         roomNumbers += 10;

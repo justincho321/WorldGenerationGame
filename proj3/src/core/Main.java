@@ -9,10 +9,11 @@ public class Main {
     public static void main(String[] args) {
 
         // build your own world!
-        World world = new World(WIDTH, HEIGHT);
+        World world = new World(23758379);
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         ter.renderFrame(world.getTiles());
-
+        //curr seed: 23758379
     }
+
 }

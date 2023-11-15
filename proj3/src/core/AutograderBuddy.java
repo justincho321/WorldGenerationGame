@@ -18,9 +18,19 @@ public class AutograderBuddy {
      * @return the 2D TETile[][] representing the state of the world
      */
     public static TETile[][] getWorldFromInput(String input) {
-
-        throw new RuntimeException("Please fill out AutograderBuddy!");
-
+        //first step get the number (**** this is seed) in between ("N*****S")
+        // do this by parsing and for loop
+        //start with empty string with he keys typed so far to keep track with whatever has been typed
+        // and then feed it into the world
+        int newSeed = Integer.parseInt(input.substring(1, input.length() - 1));
+        World gameStart = new World(newSeed);
+        return gameStart.returnWorld();
+//        for (int i = 0; i < input.length(); i++) {
+//
+//            input.charAt(0);
+//            input.
+//        }
+//        int newseed = Integer.parseInt(input);
     }
 
 
