@@ -4,6 +4,7 @@ import tileengine.TETile;
 import tileengine.Tileset;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Random;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
@@ -13,7 +14,8 @@ public class World {
     private int height = 30;
     private TETile[][] tiles;
 
-    private HashMap<Integer, Room> roomMap;
+    //private HashMap<Integer, Room> roomMap;
+    private TreeMap<Integer, Room> roomMap;
     private int roomCounter = 0;
     private WeightedQuickUnionUF wqu;
     private Random RANDOM;
@@ -56,7 +58,8 @@ public class World {
         roomNumbers += 10;
 
         //make hashmap of rooms
-        roomMap = new HashMap<>();
+        //roomMap = new HashMap<>();
+        roomMap = new TreeMap<>();
 
         //make a WeightedQuickUnionUF for the number of rooms
         wqu = new WeightedQuickUnionUF(roomNumbers);
