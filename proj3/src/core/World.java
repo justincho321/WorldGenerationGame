@@ -548,14 +548,11 @@ public class World {
                 tiles[i][room.startY + 2] = wall;
             }
             if (tiles[i][room.startY + 1] == floor) {
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
-                // if not, traverse the floor until we reach a room
-                //then connect that room with our room.
+                // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (findRoomNumber(i, room.startY + 1) == -1) {
                     if (tiles[i][room.startY] == floor) {
                         int j = 1;
-
                         if (tiles[i + 1][room.startY] == floor) {
                             wqu.union(finalRoomNum, room.num);
                             return;
@@ -563,6 +560,9 @@ public class World {
                         //build down until you reach a room
                         while (findRoomNumber(i, room.startY - j) == -1) {
                             j++;
+                            if (room.startY - j < 0) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(i, room.startY - j);
                         wqu.union(finalRoomNum, room.num);
@@ -586,14 +586,12 @@ public class World {
             }
             if (tiles[room.startX + 1][i] == floor) {
                 //wqu.union(findRoomNumber(room.startX + 1, i), room.num);
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room
                 //then connect that room with our room.
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
-
                         if (tiles[room.startX][i + 1] == floor) {
                             wqu.union(finalRoomNum, room.num);
                             return;
@@ -601,6 +599,9 @@ public class World {
                         //build left until you reach a room
                         while (findRoomNumber(room.startX - j, i) == -1) {
                             j++;
+                            if (room.startX - j < 0) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(room.startX - j, i);
                         wqu.union(finalRoomNum, room.num);
@@ -627,7 +628,6 @@ public class World {
                 tiles[i][room.startY + 2] = wall;
             }
             if (tiles[i][room.startY + 1] == floor) {
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room
                 //then connect that room with our room.
@@ -642,6 +642,9 @@ public class World {
                         //build up until you reach a room
                         while (findRoomNumber(i, room.startY + j) == -1) {
                             j++;
+                            if (room.startY + j > 30) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(i, room.startY + j);
                         wqu.union(finalRoomNum, room.num);
@@ -664,15 +667,12 @@ public class World {
                 tiles[room.startX + 2][i] = wall;
             }
             if (tiles[room.startX + 1][i] == floor) {
-                //wqu.union(findRoomNumber(room.startX + 1, i), room.num);
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room
                 //then connect that room with our room.
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
-
                         if (tiles[room.startX][i + 1] == floor) {
                             wqu.union(finalRoomNum, room.num);
                             return;
@@ -680,6 +680,9 @@ public class World {
                         //build left until you reach a room
                         while (findRoomNumber(room.startX - j, i) == -1) {
                             j++;
+                            if (room.startY + j > 30) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(room.startX - j, i);
                         wqu.union(finalRoomNum, room.num);
@@ -706,10 +709,8 @@ public class World {
                 tiles[i][room.startY + 2] = wall;
             }
             if (tiles[i][room.startY + 1] == floor) {
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
-                // if not, traverse the floor until we reach a room
-                //then connect that room with our room.
+                // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (findRoomNumber(i, room.startY + 1) == -1) {
                     if (tiles[i][room.startY] == floor) {
                         int j = 1;
@@ -721,12 +722,14 @@ public class World {
                         //build down until you reach a room
                         while (findRoomNumber(i, room.startY - j) == -1) {
                             j++;
+                            if (room.startY - j < 0) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(i, room.startY - j);
                         wqu.union(finalRoomNum, room.num);
                         return;
                     } else {
-
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
@@ -744,11 +747,8 @@ public class World {
                 tiles[room.startX + 2][i] = wall;
             }
             if (tiles[room.startX + 1][i] == floor) {
-                //wqu.union(findRoomNumber(room.startX + 1, i), room.num);
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
-                // if not, traverse the floor until we reach a room
-                //then connect that room with our room.
+                // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
@@ -760,6 +760,9 @@ public class World {
                         //build right until you reach a room
                         while (findRoomNumber(room.startX + j, i) == -1) {
                             j++;
+                            if (room.startX + j > 60) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(room.startX + j, i);
                         wqu.union(finalRoomNum, room.num);
@@ -786,14 +789,11 @@ public class World {
                 tiles[i][room.startY + 2] = wall;
             }
             if (tiles[i][room.startY + 1] == floor) {
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
-                // if not, traverse the floor until we reach a room
-                //then connect that room with our room.
+                // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (findRoomNumber(i, room.startY + 1) == -1) {
                     if (tiles[i][room.startY + 1] == floor) {
                         int j = 1;
-
                         if (tiles[i + 1][room.startY + 1] == floor) {
                             wqu.union(finalRoomNum, room.num);
                             return;
@@ -801,6 +801,9 @@ public class World {
                         //build up until you reach a room
                         while (findRoomNumber(i, room.startY + j) == -1) {
                             j++;
+                            if (room.startY + j > 30) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(i, room.startY + j);
                         wqu.union(finalRoomNum, room.num);
@@ -810,7 +813,6 @@ public class World {
                     wqu.union(finalRoomNum, room.num);
                     return;
                 }
-
             } else {
                 tiles[i][room.startY + 1] = floor;
             }
@@ -824,8 +826,6 @@ public class World {
                 tiles[room.startX + 2][i] = wall;
             }
             if (tiles[room.startX + 1][i] == floor) {
-                //wqu.union(findRoomNumber(room.startX + 1, i), room.num);
-
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room
                 //then connect that room with our room.
@@ -840,6 +840,9 @@ public class World {
                         //build right until you reach a room
                         while (findRoomNumber(room.startX + j, i) == -1) {
                             j++;
+                            if (room.startX + j > 60) {
+                                return;
+                            }
                         }
                         finalRoomNum = findRoomNumber(room.startX + j, i);
                         wqu.union(finalRoomNum, room.num);
