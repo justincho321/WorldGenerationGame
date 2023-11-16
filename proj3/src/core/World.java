@@ -86,6 +86,8 @@ public class World {
                 }
             }
         }
+
+        int temp = 4;
     }
 
     public TETile[][] returnWorld() {

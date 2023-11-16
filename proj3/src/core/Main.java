@@ -7,7 +7,7 @@ public class Main {
     private static final int HEIGHT = 30;
 
     public static void main(String[] args) {
-        long seed = 233335;
+        long seed = 1009835137506199904L;
         // build your own world!
         World world = new World(seed);
         TERenderer ter = new TERenderer();
