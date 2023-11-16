@@ -18,7 +18,9 @@ public class AutograderBuddy {
      * @return the 2D TETile[][] representing the state of the world
      */
     public static TETile[][] getWorldFromInput(String input) {
-
+//        if (input.contains(":q")) {
+//            return new TETile[][];
+//        }
         int newSeed = Integer.parseInt(input.substring(1, input.length() - 1));
         World gameStart = new World(newSeed);
         return gameStart.returnWorld();
