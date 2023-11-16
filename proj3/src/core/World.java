@@ -75,7 +75,8 @@ public class World {
                 }
             }
         }
-
+        //tiles[18][14] = Tileset.AVATAR;
+        //tiles[7][6] = Tileset.AVATAR;
         while (wqu.count() != 1) {
             for (int i = 0; i < roomNumbers; i++) {
                 for (int j = 0; j < roomNumbers; j++) {
@@ -554,6 +555,11 @@ public class World {
                 if (findRoomNumber(i, room.startY + 1) == -1) {
                     if (tiles[i][room.startY] == floor) {
                         int j = 1;
+
+                        if (tiles[i + 1][room.startY] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build down until you reach a room
                         while (findRoomNumber(i, room.startY - j) == -1) {
                             j++;
@@ -562,6 +568,9 @@ public class World {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
+                } else {
+                    wqu.union(finalRoomNum, room.num);
+                    return;
                 }
             } else {
                 tiles[i][room.startY + 1] = floor;
@@ -584,11 +593,19 @@ public class World {
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
+
+                        if (tiles[room.startX][i + 1] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build left until you reach a room
                         while (findRoomNumber(room.startX - j, i) == -1) {
                             j++;
                         }
                         finalRoomNum = findRoomNumber(room.startX - j, i);
+                        wqu.union(finalRoomNum, room.num);
+                        return;
+                    } else {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
@@ -617,11 +634,19 @@ public class World {
                 if (findRoomNumber(i, room.startY + 1) == -1) {
                     if (tiles[i][room.startY] == floor) {
                         int j = 1;
+
+                        if (tiles[i + 1][room.startY] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build up until you reach a room
                         while (findRoomNumber(i, room.startY + j) == -1) {
                             j++;
                         }
                         finalRoomNum = findRoomNumber(i, room.startY + j);
+                        wqu.union(finalRoomNum, room.num);
+                        return;
+                    } else {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
@@ -647,11 +672,19 @@ public class World {
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
+
+                        if (tiles[room.startX][i + 1] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build left until you reach a room
                         while (findRoomNumber(room.startX - j, i) == -1) {
                             j++;
                         }
                         finalRoomNum = findRoomNumber(room.startX - j, i);
+                        wqu.union(finalRoomNum, room.num);
+                        return;
+                    } else {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
@@ -680,11 +713,20 @@ public class World {
                 if (findRoomNumber(i, room.startY + 1) == -1) {
                     if (tiles[i][room.startY] == floor) {
                         int j = 1;
+
+                        if (tiles[i + 1][room.startY] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build down until you reach a room
                         while (findRoomNumber(i, room.startY - j) == -1) {
                             j++;
                         }
                         finalRoomNum = findRoomNumber(i, room.startY - j);
+                        wqu.union(finalRoomNum, room.num);
+                        return;
+                    } else {
+
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
@@ -710,11 +752,19 @@ public class World {
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
+
+                        if (tiles[room.startX][i + 1] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build right until you reach a room
                         while (findRoomNumber(room.startX + j, i) == -1) {
                             j++;
                         }
                         finalRoomNum = findRoomNumber(room.startX + j, i);
+                        wqu.union(finalRoomNum, room.num);
+                        return;
+                    } else {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
@@ -741,8 +791,13 @@ public class World {
                 // if not, traverse the floor until we reach a room
                 //then connect that room with our room.
                 if (findRoomNumber(i, room.startY + 1) == -1) {
-                    if (tiles[i][room.startY] == floor) {
+                    if (tiles[i][room.startY + 1] == floor) {
                         int j = 1;
+
+                        if (tiles[i + 1][room.startY + 1] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build up until you reach a room
                         while (findRoomNumber(i, room.startY + j) == -1) {
                             j++;
@@ -751,6 +806,9 @@ public class World {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
+                } else {
+                    wqu.union(finalRoomNum, room.num);
+                    return;
                 }
 
             } else {
@@ -774,11 +832,19 @@ public class World {
                 if (findRoomNumber(room.startX + 1, i) == -1) {
                     if (tiles[room.startX][i] == floor) {
                         int j = 1;
+
+                        if (tiles[room.startX][i + 1] == floor) {
+                            wqu.union(finalRoomNum, room.num);
+                            return;
+                        }
                         //build right until you reach a room
                         while (findRoomNumber(room.startX + j, i) == -1) {
                             j++;
                         }
                         finalRoomNum = findRoomNumber(room.startX + j, i);
+                        wqu.union(finalRoomNum, room.num);
+                        return;
+                    } else {
                         wqu.union(finalRoomNum, room.num);
                         return;
                     }
