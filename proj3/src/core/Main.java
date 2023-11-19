@@ -13,6 +13,6 @@ public class Main {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         ter.renderFrame(world.getTiles());
-
+        //test addition -- DELETE LATER
     }
 }
