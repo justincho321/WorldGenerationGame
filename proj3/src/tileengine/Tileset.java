@@ -21,16 +21,16 @@ public class Tileset {
     public static final TETile WALL = new TETile('#', new Color(216, 128, 128), Color.darkGray,
             "wall");
 
-    public static final TETile CUSTOM_WALL = new TETile('+', Color.black, new Color(56, 18, 55),
+    public static final TETile CUSTOM_WALL = new TETile('#', Color.black, new Color(7, 19, 68),
             "custom wall");
     public static final TETile FLOOR = new TETile('·', new Color(128, 192, 128), Color.black,
             "floor");
 
-    public static final TETile CUSTOM_FLOOR = new TETile('*', Color.black, new Color(168, 92, 173),
+    public static final TETile CUSTOM_FLOOR = new TETile('+', Color.lightGray, new Color(130, 149, 224),
             "custom floor");
     public static final TETile NOTHING = new TETile(' ', Color.black, Color.black, "nothing");
 
-    public static final TETile CUSTOM_NOTHING = new TETile(' ', Color.black, new Color(182, 194, 255, 255), "custom nothing");
+    public static final TETile CUSTOM_NOTHING = new TETile(' ', Color.black, new Color(0, 0, 0, 255), "custom nothing");
 
     public static final TETile GRASS = new TETile('"', Color.green, Color.black, "grass");
     public static final TETile WATER = new TETile('≈', Color.blue, Color.black, "water");
