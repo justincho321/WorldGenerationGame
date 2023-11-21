@@ -1,9 +1,8 @@
 package core;
 
 import tileengine.TETile;
-
+import tileengine.Tileset;
 import java.util.Random;
-
 
 public class Room {
     int num;
@@ -11,6 +10,8 @@ public class Room {
     int startY;
     int width;
     int height;
+    //public static TETile[][] fG = Tileset.floorGradient;
+    static TETile floor;
 
     //CONSTRUCTOR
     public Room(int num, int startX, int startY, int roomWidth, int roomHeight) {
@@ -101,17 +102,19 @@ public class Room {
             TETile second = world.getTiles()[roomStartWidth + (j * multiplier1)][ceiling];
             int[] results = Room.checkMidWallCase(world, firstX, firstY, "y");
             if (results[0] == 1 && results[1] != -1) {
-                world.getTiles()[roomStartWidth + (j * multiplier1)][roomStartHeight] = world.getFloor();
+                floor = Tileset.fG[roomStartWidth + (j * multiplier1)][roomStartHeight];
+                world.getTiles()[roomStartWidth + (j * multiplier1)][roomStartHeight] = floor;
                 //check which room we are combining with and union them with our wqu
                 world.getWQU().union(roomNumber, results[1]);
-            } else if (first != world.getFloor()) {
+            } else if (first != Tileset.fG[roomStartWidth + (j * multiplier1)][roomStartHeight]) {
                 world.getTiles()[roomStartWidth + (j * multiplier1)][roomStartHeight] = world.getWall();
             }
             results = Room.checkMidWallCase(world, secondX, secondY, "y");
             if (results[0] == 1 && results[1] != -1) {
-                world.getTiles()[roomStartWidth + (j * multiplier1)][ceiling] = world.getFloor();
+                floor = Tileset.fG[roomStartWidth + (j * multiplier1)][ceiling];
+                world.getTiles()[roomStartWidth + (j * multiplier1)][ceiling] = floor;
                 world.getWQU().union(roomNumber, results[1]);
-            } else if (second != world.getFloor()) {
+            } else if (second != Tileset.fG[roomStartWidth + (j * multiplier1)][ceiling]) {
                 world.getTiles()[roomStartWidth + (j * multiplier1)][ceiling] = world.getWall();
             }
         }
@@ -125,16 +128,18 @@ public class Room {
             TETile fourth = world.getTiles()[fourthX][fourthY];
             int[] results = Room.checkMidWallCase(world, thirdX, thirdY, "x");
             if (results[0] == 1 && results[1] != -1) {
-                world.getTiles()[roomStartWidth][roomStartHeight + (k * multiplier2)] = world.getFloor();
+                floor = Tileset.fG[roomStartWidth][roomStartHeight + (k * multiplier2)];
+                world.getTiles()[roomStartWidth][roomStartHeight + (k * multiplier2)] = floor;
                 world.getWQU().union(roomNumber, results[1]);
-            } else if (third != world.getFloor()) {
+            } else if (third != Tileset.fG[thirdX][thirdY]) {
                 world.getTiles()[roomStartWidth][roomStartHeight + (k * multiplier2)] = world.getWall();
             }
             results = Room.checkMidWallCase(world, fourthX, fourthY, "x");
             if (results[0] == 1 && results[1] != -1) {
-                world.getTiles()[oppWall][roomStartHeight + (k * multiplier2)] = world.getFloor();
+                floor = Tileset.fG[oppWall][roomStartHeight + (k * multiplier2)];
+                world.getTiles()[oppWall][roomStartHeight + (k * multiplier2)] = floor;
                 world.getWQU().union(roomNumber, results[1]);
-            } else if (fourth != world.getFloor()) {
+            } else if (fourth != Tileset.fG[fourthX][fourthY]) {
                 world.getTiles()[oppWall][roomStartHeight + (k * multiplier2)] = world.getWall();
             }
         }
@@ -148,7 +153,7 @@ public class Room {
     private void setFloor(World world, Room room) {
         for (int i = room.startX + 1; i < (room.startX + room.width); i++) {
             for (int j = room.startY + 1; j < (room.startY + room.height); j++) {
-                world.getTiles()[i][j] = world.getFloor();
+                world.getTiles()[i][j] = Tileset.fG[i][j];
             }
         }
     }
@@ -178,7 +183,7 @@ public class Room {
                 TETile temp11 = world.getTiles()[x][y];
                 TETile temp12 = world.getTiles()[x + 1][y];
                 TETile temp13 = world.getTiles()[x - 1][y];
-                if (temp11 == world.getWall() && temp12 == world.getFloor() && temp13 != world.getNothing()) {
+                if (temp11 == world.getWall() && temp12 == Tileset.fG[x + 1][y] && temp13 != world.getNothing()) {
                     roomNum = Room.findRoomNumber(world, x + 1, y);
                     returnArray[0] = 1;
                     returnArray[1] = roomNum;
@@ -189,7 +194,7 @@ public class Room {
                 TETile temp21 = world.getTiles()[x][y];
                 TETile temp22 = world.getTiles()[x - 1][y];
                 TETile temp23 = world.getTiles()[x + 1][y];
-                if (temp21 == world.getWall() && temp22 == world.getFloor() && temp23 != world.getNothing()) {
+                if (temp21 == world.getWall() && temp22 == Tileset.fG[x - 1][y] && temp23 != world.getNothing()) {
                     roomNum = Room.findRoomNumber(world,x - 1, y);
                     returnArray[0] = 1;
                     returnArray[1] = roomNum;
@@ -201,7 +206,7 @@ public class Room {
                 TETile temp31 = world.getTiles()[x][y];
                 TETile temp32 = world.getTiles()[x][y + 1];
                 TETile temp33 = world.getTiles()[x][y - 1];
-                if (temp31 == world.getWall() && temp32 == world.getFloor() && temp33 != world.getNothing()) {
+                if (temp31 == world.getWall() && temp32 == Tileset.fG[x][y + 1] && temp33 != world.getNothing()) {
                     roomNum = Room.findRoomNumber(world, x, y + 1);
                     returnArray[0] = 1;
                     returnArray[1] = roomNum;
@@ -212,7 +217,7 @@ public class Room {
                 TETile temp41 = world.getTiles()[x][y];
                 TETile temp42 = world.getTiles()[x][y - 1];
                 TETile temp43 = world.getTiles()[x][y + 1];
-                if (temp41 == world.getWall() && temp42 == world.getFloor() && temp43 != world.getNothing()) {
+                if (temp41 == world.getWall() && temp42 == Tileset.fG[x][y - 1] && temp43 != world.getNothing()) {
                     roomNum = Room.findRoomNumber(world, x, y - 1);
                     returnArray[0] = 1;
                     returnArray[1] = roomNum;

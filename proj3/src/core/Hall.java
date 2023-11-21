@@ -2,8 +2,10 @@ package core;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import tileengine.TETile;
+import tileengine.Tileset;
 
 public class Hall {
+    static TETile floor;
 
     //return whether two rooms can be connected by a horizontal OR vertical hallway
     public static int[] boolMakeHallwaysX(World world, Room room1, Room room2) {
@@ -192,11 +194,11 @@ public class Hall {
 
             for (int i = leftRoom.startX + leftRoom.width; i <= rightRoom.startX; i++) {
 
-                if (tiles[i][hallStartY - 1] != world.getFloor()) {
+                if (tiles[i][hallStartY - 1] != Tileset.fG[i][hallStartY - 1]) {
                     tiles[i][hallStartY - 1] = world.getWall();
                 }
-                tiles[i][hallStartY] = world.getFloor();
-                if (tiles[i][hallStartY + 1] != world.getFloor()) {
+                tiles[i][hallStartY] = Tileset.fG[i][hallStartY];
+                if (tiles[i][hallStartY + 1] != Tileset.fG[i][hallStartY + 1]) {
                     tiles[i][hallStartY + 1] = world.getWall();
                 }
             }
@@ -246,11 +248,11 @@ public class Hall {
 
             for (int i = lowerRoom.startY + lowerRoom.height; i <= upperRoom.startY; i++) {
 
-                if (tiles[hallStartX - 1][i] != world.getFloor()) {
+                if (tiles[hallStartX - 1][i] != Tileset.fG[hallStartX - 1][i]) {
                     tiles[hallStartX - 1][i] = world.getWall();
                 }
-                tiles[hallStartX][i] = world.getFloor();
-                if (tiles[hallStartX + 1][i] != world.getFloor()) {
+                tiles[hallStartX][i] = Tileset.fG[hallStartX][i];
+                if (tiles[hallStartX + 1][i] != Tileset.fG[hallStartX + 1][i]) {
                     tiles[hallStartX + 1][i] = world.getWall();
                 }
             }
@@ -261,7 +263,6 @@ public class Hall {
     public static boolean checkAdjHallwayY(World world, Room leftRoom, Room rightRoom, int hallStartY) {
         int height = world.getHeight();
         TETile wall = world.getWall();
-        TETile floor = world.getFloor();
         TETile[][] tiles = world.getTiles();
         //if hallway right above or below
         for (int i = leftRoom.startX + leftRoom.width + 1; i < rightRoom.startX; i++) {
@@ -269,12 +270,13 @@ public class Hall {
                 //walls of hallways are touching
                 if (hallStartY + 3 < height) {
                     if (tiles[i][hallStartY + 1] == wall
-                            && tiles[i][hallStartY + 2] == floor && tiles[i][hallStartY + 3] == wall) {
+                            && tiles[i][hallStartY + 2] == Tileset.fG[i][hallStartY + 2]
+                            && tiles[i][hallStartY + 3] == wall) {
                         return true;
                     }
                 }
                 //wall of hallways are overlapping above
-                if (tiles[i][hallStartY] == wall && tiles[i][hallStartY + 1] == floor
+                if (tiles[i][hallStartY] == wall && tiles[i][hallStartY + 1] == Tileset.fG[i][hallStartY + 1]
                         && tiles[i][hallStartY + 2] == wall) {
                     return true;
                 }
@@ -282,13 +284,13 @@ public class Hall {
             if (hallStartY - 1 >= 0 && hallStartY - 2 >= 0) {
                 //walls of hallways overlapping below
                 if (hallStartY - 3 >= 0) {
-                    if (tiles[i][hallStartY - 1] == wall && tiles[i][hallStartY - 2] == floor
+                    if (tiles[i][hallStartY - 1] == wall && tiles[i][hallStartY - 2] == Tileset.fG[i][hallStartY - 2]
                             && tiles[i][hallStartY - 3] == wall) {
                         return true;
                     }
                 }
                 //overlapping below
-                if (tiles[i][hallStartY] == wall && tiles[i][hallStartY - 1] == floor
+                if (tiles[i][hallStartY] == wall && tiles[i][hallStartY - 1] == Tileset.fG[i][hallStartY - 1]
                         && tiles[i][hallStartY - 2] == wall) {
                     return true;
                 }
@@ -300,20 +302,19 @@ public class Hall {
     public static boolean checkAdjHallwayX(World world, Room leftRoom, Room rightRoom, int hallStartX) {
         int width = world.getWidth();
         TETile wall = world.getWall();
-        TETile floor = world.getFloor();
         TETile[][] tiles = world.getTiles();
         //if hallway right above or below
         for (int i = leftRoom.startY + leftRoom.height + 1; i < rightRoom.startY; i++) {
             if (hallStartX + 1 < width && hallStartX + 2 < width) {
                 //walls of hallways are touching
                 if (hallStartX + 3 < width) {
-                    if (tiles[hallStartX + 1][i] == wall && tiles[hallStartX + 2][i] == floor
+                    if (tiles[hallStartX + 1][i] == wall && tiles[hallStartX + 2][i] == Tileset.fG[hallStartX + 2][i]
                             && tiles[hallStartX + 3][i] == wall) {
                         return true;
                     }
                 }
                 //wall of hallways are overlapping above
-                if (tiles[hallStartX][i] == wall && tiles[hallStartX + 1][i] == floor
+                if (tiles[hallStartX][i] == wall && tiles[hallStartX + 1][i] == Tileset.fG[hallStartX + 1][i]
                         && tiles[hallStartX + 2][i] == wall) {
                     return true;
                 }
@@ -321,13 +322,13 @@ public class Hall {
             if (hallStartX - 1 >= 0 && hallStartX - 2 >= 0) {
                 //walls of hallways overlapping below
                 if (hallStartX - 3 >= 0) {
-                    if (tiles[hallStartX - 1][i] == wall && tiles[hallStartX - 2][i] == floor
+                    if (tiles[hallStartX - 1][i] == wall && tiles[hallStartX - 2][i] == Tileset.fG[hallStartX - 2][i]
                             && tiles[hallStartX - 3][i] == wall) {
                         return true;
                     }
                 }
                 //overlapping below
-                if (tiles[hallStartX][i] == wall && tiles[hallStartX - 1][i] == floor
+                if (tiles[hallStartX][i] == wall && tiles[hallStartX - 1][i] == Tileset.fG[hallStartX - 1][i]
                         && tiles[hallStartX - 2][i] == wall) {
                     return true;
                 }
@@ -364,22 +365,21 @@ public class Hall {
 
     private static void connectRoomTopRightHelper(World world, Room room) {
         TETile wall = world.getWall();
-        TETile floor = world.getFloor();
         TETile[][] tiles = world.getTiles();
         WeightedQuickUnionUF wqu = world.getWQU();
         int finalRoomNum = 0;
         //build left
         for (int i = room.startX; i >= 0; i--) {
-            if (tiles[i][room.startY + 2] != floor) {
+            if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
                 tiles[i][room.startY + 2] = wall;
             }
-            if (tiles[i][room.startY + 1] == floor) {
+            if (tiles[i][room.startY + 1] == Tileset.fG[i][room.startY + 1]) {
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (Room.findRoomNumber(world, i, room.startY + 1) == -1) {
-                    if (tiles[i][room.startY] == floor) {
+                    if (tiles[i][room.startY] == Tileset.fG[i][room.startY]) {
                         int j = 1;
-                        if (tiles[i + 1][room.startY] == floor) {
+                        if (tiles[i + 1][room.startY] == Tileset.fG[i + 1][room.startY]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -399,23 +399,23 @@ public class Hall {
                     return;
                 }
             } else {
-                tiles[i][room.startY + 1] = floor;
+                tiles[i][room.startY + 1] = Tileset.fG[i][room.startY + 1];
             }
-            if (tiles[i][room.startY] != floor) {
+            if (tiles[i][room.startY] != Tileset.fG[i][room.startY]) {
                 tiles[i][room.startY] = wall;
             }
         }
         //build down
         for (int i = room.startY; i >= 0; i--) {
-            if (tiles[room.startX + 2][i] != floor) {
+            if (tiles[room.startX + 2][i] != Tileset.fG[room.startX + 2][i]) {
                 tiles[room.startX + 2][i] = wall;
             }
-            if (tiles[room.startX + 1][i] == floor) {
+            if (tiles[room.startX + 1][i] == Tileset.fG[room.startX + 1][i]) {
                 //if we reached a floor of another hallway or room, check if we're in a room...see above
                 if (Room.findRoomNumber(world, room.startX + 1, i) == -1) {
-                    if (tiles[room.startX][i] == floor) {
+                    if (tiles[room.startX][i] == Tileset.fG[room.startX][i]) {
                         int j = 1;
-                        if (tiles[room.startX][i + 1] == floor) {
+                        if (tiles[room.startX][i + 1] == Tileset.fG[room.startX][i + 1]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -435,9 +435,9 @@ public class Hall {
                     }
                 }
             } else {
-                tiles[room.startX + 1][i] = floor;
+                tiles[room.startX + 1][i] = Tileset.fG[room.startX + 1][i];
             }
-            if (tiles[room.startX][i] != floor) {
+            if (tiles[room.startX][i] != Tileset.fG[room.startX][i]) {
                 tiles[room.startX][i] = wall;
             }
         }
@@ -445,22 +445,21 @@ public class Hall {
 
     private static void connectRoomBottomRightHelper(World world, Room room) {
         TETile wall = world.getWall();
-        TETile floor = world.getFloor();
         TETile[][] tiles = world.getTiles();
         WeightedQuickUnionUF wqu = world.getWQU();
         int finalRoomNum = 0;
         for (int i = room.startX; i >= 0; i--) { //build left
-            if (tiles[i][room.startY + 2] != floor) {
+            if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
                 tiles[i][room.startY + 2] = wall;
             }
-            if (tiles[i][room.startY + 1] == floor) {
+            if (tiles[i][room.startY + 1] == Tileset.fG[i][room.startY + 1]) {
                 //if we reached a floor of another hallway or room, check if we're in a room. if not, traverse
                 //the floor until we reach a room then connect that room with our room.
                 if (Room.findRoomNumber(world, i, room.startY + 1) == -1) {
-                    if (tiles[i][room.startY] == floor) {
+                    if (tiles[i][room.startY] == Tileset.fG[i][room.startY]) {
                         int j = 1;
 
-                        if (tiles[i + 1][room.startY] == floor) {
+                        if (tiles[i + 1][room.startY] == Tileset.fG[i + 1][room.startY]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -480,23 +479,23 @@ public class Hall {
                     }
                 }
             } else {
-                tiles[i][room.startY + 1] = floor;
+                tiles[i][room.startY + 1] = Tileset.fG[i][room.startY + 1];
             }
-            if (tiles[i][room.startY] != floor) {
+            if (tiles[i][room.startY] != Tileset.fG[i][room.startY]) {
                 tiles[i][room.startY] = wall;
             }
         }
         //build up
         for (int i = room.startY + room.height; i < world.getHeight(); i++) {
-            if (tiles[room.startX + 2][i] != floor) {
+            if (tiles[room.startX + 2][i] != Tileset.fG[room.startX + 2][i]) {
                 tiles[room.startX + 2][i] = wall;
             }
-            if (tiles[room.startX + 1][i] == floor) {
+            if (tiles[room.startX + 1][i] == Tileset.fG[room.startX + 1][i]) {
                 //if we reached a floor of another hallway or room, check if we're in a room. if not...
                 if (Room.findRoomNumber(world, room.startX + 1, i) == -1) {
-                    if (tiles[room.startX][i] == floor) {
+                    if (tiles[room.startX][i] == Tileset.fG[room.startX][i]) {
                         int j = 1;
-                        if (tiles[room.startX][i + 1] == floor) {
+                        if (tiles[room.startX][i + 1] == Tileset.fG[room.startX + 2][i + 1]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -516,9 +515,9 @@ public class Hall {
                     }
                 }
             } else {
-                tiles[room.startX + 1][i] = floor;
+                tiles[room.startX + 1][i] = Tileset.fG[room.startX + 1][i];
             }
-            if (tiles[room.startX][i] != floor) {
+            if (tiles[room.startX][i] != Tileset.fG[room.startX][i]) {
                 tiles[room.startX][i] = wall;
             }
         }
@@ -526,23 +525,22 @@ public class Hall {
 
     private static void connectRoomTopLeftHelper(World world, Room room) {
         TETile wall = world.getWall();
-        TETile floor = world.getFloor();
         TETile[][] tiles = world.getTiles();
         WeightedQuickUnionUF wqu = world.getWQU();
         int finalRoomNum = 0;
         //build right
         for (int i = room.startX + room.width; i < world.getWidth(); i++) {
-            if (tiles[i][room.startY + 2] != floor) {
+            if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
                 tiles[i][room.startY + 2] = wall;
             }
-            if (tiles[i][room.startY + 1] == floor) {
+            if (tiles[i][room.startY + 1] == Tileset.fG[i][room.startY + 1]) {
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (Room.findRoomNumber(world, i, room.startY + 1) == -1) {
-                    if (tiles[i][room.startY] == floor) {
+                    if (tiles[i][room.startY] == Tileset.fG[i][room.startY]) {
                         int j = 1;
 
-                        if (tiles[i + 1][room.startY] == floor) {
+                        if (tiles[i + 1][room.startY] == Tileset.fG[i + 1][room.startY]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -561,24 +559,24 @@ public class Hall {
                     }
                 }
             } else {
-                tiles[i][room.startY + 1] = floor;
+                tiles[i][room.startY + 1] = Tileset.fG[i][room.startY + 1];
             }
-            if (tiles[i][room.startY] != floor) {
+            if (tiles[i][room.startY] != Tileset.fG[i][room.startY]) {
                 tiles[i][room.startY] = wall;
             }
         }
         for (int i = room.startY; i >= 0; i--) { //build down
-            if (tiles[room.startX + 2][i] != floor) {
+            if (tiles[room.startX + 2][i] != Tileset.fG[room.startX + 2][i]) {
                 tiles[room.startX + 2][i] = wall;
             }
-            if (tiles[room.startX + 1][i] == floor) {
+            if (tiles[room.startX + 1][i] == Tileset.fG[room.startX + 1][i]) {
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (Room.findRoomNumber(world, room.startX + 1, i) == -1) {
-                    if (tiles[room.startX][i] == floor) {
+                    if (tiles[room.startX][i] == Tileset.fG[room.startX][i]) {
                         int j = 1;
 
-                        if (tiles[room.startX][i + 1] == floor) {
+                        if (tiles[room.startX][i + 1] == Tileset.fG[room.startX][i + 1]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -597,9 +595,9 @@ public class Hall {
                     }
                 }
             } else {
-                tiles[room.startX + 1][i] = floor;
+                tiles[room.startX + 1][i] = Tileset.fG[room.startX + 1][i];
             }
-            if (tiles[room.startX][i] != floor) {
+            if (tiles[room.startX][i] != Tileset.fG[room.startX][i]) {
                 tiles[room.startX][i] = wall;
             }
         }
@@ -607,22 +605,21 @@ public class Hall {
 
     private static void connectRoomBottomLeftHelper(World world, Room room) {
         TETile wall = world.getWall();
-        TETile floor = world.getFloor();
         TETile[][] tiles = world.getTiles();
         WeightedQuickUnionUF wqu = world.getWQU();
         int finalRoomNum = 0;
         //build right
         for (int i = room.startX + room.width; i < world.getWidth(); i++) {
-            if (tiles[i][room.startY + 2] != floor) {
+            if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
                 tiles[i][room.startY + 2] = wall;
             }
-            if (tiles[i][room.startY + 1] == floor) {
+            if (tiles[i][room.startY + 1] == Tileset.fG[i][room.startY + 1]) {
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 // if not, traverse the floor until we reach a room then connect that room with our room.
                 if (Room.findRoomNumber(world, i, room.startY + 1) == -1) {
-                    if (tiles[i][room.startY + 1] == floor) {
+                    if (tiles[i][room.startY + 1] == Tileset.fG[i][room.startY + 1]) {
                         int j = 1;
-                        if (tiles[i + 1][room.startY + 1] == floor) {
+                        if (tiles[i + 1][room.startY + 1] == Tileset.fG[i + 1][room.startY + 1]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -641,24 +638,24 @@ public class Hall {
                     return;
                 }
             } else {
-                tiles[i][room.startY + 1] = floor;
+                tiles[i][room.startY + 1] = Tileset.fG[i][room.startY + 1];
             }
-            if (tiles[i][room.startY] != floor) {
+            if (tiles[i][room.startY] != Tileset.fG[i][room.startY]) {
                 tiles[i][room.startY] = wall;
             }
         }
         for (int i = room.startY + room.height; i < world.getHeight(); i++) { //build up
-            if (tiles[room.startX + 2][i] != floor) {
+            if (tiles[room.startX + 2][i] != Tileset.fG[room.startX + 2][i]) {
                 tiles[room.startX + 2][i] = wall;
             }
-            if (tiles[room.startX + 1][i] == floor) {
+            if (tiles[room.startX + 1][i] == Tileset.fG[room.startX + 1][i]) {
                 //if we reached a floor of another hallway or room, check if we're in a room.
                 //if not, traverse the floor until we reach a room then connect that room with our room.
                 if (Room.findRoomNumber(world, room.startX + 1, i) == -1) {
-                    if (tiles[room.startX][i] == floor) {
+                    if (tiles[room.startX][i] == Tileset.fG[room.startX][i]) {
                         int j = 1;
 
-                        if (tiles[room.startX][i + 1] == floor) {
+                        if (tiles[room.startX][i + 1] == Tileset.fG[room.startX][i + 1]) {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
@@ -678,9 +675,9 @@ public class Hall {
                     }
                 }
             } else {
-                tiles[room.startX + 1][i] = floor;
+                tiles[room.startX + 1][i] = Tileset.fG[room.startX + 1][i];
             }
-            if (tiles[room.startX][i] != floor) {
+            if (tiles[room.startX][i] != Tileset.fG[room.startX][i]) {
                 tiles[room.startX][i] = wall;
             }
         }

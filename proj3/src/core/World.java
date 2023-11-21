@@ -20,9 +20,12 @@ public class World {
     private TETile floor = Tileset.CUSTOM_FLOOR;
     private TETile nothing = Tileset.CUSTOM_NOTHING;
 
+    //private Tileset ts;
+
     //WORLD CONSTRUCTOR
     public World(long seed) {
-
+        //floor gradient intialize
+        Tileset ts = new Tileset();
         RANDOM = new Random(seed);
         //make tiles object and populate with nothing initially
         tiles = new TETile[width][height];
