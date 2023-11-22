@@ -17,9 +17,9 @@ public class Main {
 
     public static void main(String[] args) {
         //populate floorGradient array
-
         fG = new TETile[60][30];
         Tileset.colorGradient(fG);
+
         //render main menu page
         Menu menu = new Menu(WIDTH, HEIGHT);
         TERenderer ter = new TERenderer();
@@ -28,17 +28,16 @@ public class Main {
 
         long seed = menu.runMenu();
 
+        //gradient floors
         Tileset.MyComponent gradient = new Tileset.MyComponent();
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         gradient.paint(g);
 
-        //long seed = 3015204577362510986L;
-        // build your own world!
+        //build the world, run the game
         World world = new World(seed);
-        //TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        ter.renderFrame(world.getTiles());
-        //test addition -- DELETE LATER
+        Game game = new Game();
+        game.runGame(world, WIDTH, HEIGHT);
+
     }
 }

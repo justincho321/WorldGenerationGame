@@ -99,29 +99,32 @@ public class Tileset {
 
     }
     public static class MyComponent extends JComponent {
+        static GradientPaint gradient;
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
 
-            Color startColor = new Color(121, 5, 121);
-            Color endColor = new Color(74, 127, 185);
+            Color startColor = new Color(39, 110, 9);
+            Color endColor = new Color(143, 182, 238);
 
             int startX = 0, startY = 0, endX = 60, endY = 30;
 
-            GradientPaint gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
+            gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
             g2d.setPaint(gradient);
             Paint p = g2d.getPaint();
 
             for (int i = 0; i < 60; i++) {
                 for (int j = 0; j < 30; j++) {
                     Color colorAtSpecificPoint = getColorAt(gradient, i, j);
-                    TETile floorTemp = new TETile('+', Color.lightGray, colorAtSpecificPoint,
+                    TETile floorTemp = new TETile('·', Color.lightGray, colorAtSpecificPoint,
                             "custom floor");
                     fG[i][j] = floorTemp;
                 }
             }
         }
-
-        private Color getColorAt(GradientPaint gradientPaint, float x, float y) {
+        public static GradientPaint getGradientPaint() {
+            return gradient;
+        }
+        public static Color getColorAt(GradientPaint gradientPaint, float x, float y) {
             // Calculate the fraction of the distance between point1 and point2
             float fraction = calculateFraction(gradientPaint, x, y);
 
@@ -139,7 +142,7 @@ public class Tileset {
             return new Color(interpolatedComponents[0], interpolatedComponents[1], interpolatedComponents[2], interpolatedComponents[3]);
         }
 
-        private float calculateFraction(GradientPaint gradientPaint, float x, float y) {
+        private static float calculateFraction(GradientPaint gradientPaint, float x, float y) {
             float x1 = (float) gradientPaint.getPoint1().getX();
             float y1 = (float) gradientPaint.getPoint1().getY();
             float x2 = (float) gradientPaint.getPoint2().getX();

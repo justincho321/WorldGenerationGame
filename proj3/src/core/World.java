@@ -1,6 +1,8 @@
 package core;
 import tileengine.TETile;
 import tileengine.Tileset;
+
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
@@ -16,9 +18,10 @@ public class World {
     private Random RANDOM;
 
     //setting custom tiles
-    private TETile wall = Tileset.CUSTOM_WALL;
-    private TETile floor = Tileset.CUSTOM_FLOOR;
-    private TETile nothing = Tileset.CUSTOM_NOTHING;
+    public static TETile wall = Tileset.CUSTOM_WALL;
+    public static TETile floor = Tileset.CUSTOM_FLOOR;
+    public static TETile nothing = Tileset.CUSTOM_NOTHING;
+    public static TETile avatar = Tileset.AVATAR;
 
     //private Tileset ts;
 
@@ -62,10 +65,12 @@ public class World {
                 }
             }
         }
-        //tiles[18][14] = Tileset.AVATAR;
-        //tiles[7][6] = Tileset.AVATAR;
+        int leftmost = 0;
         while (wqu.count() != 1) {
             for (int i = 0; i < roomNumbers; i++) {
+                if (roomMap.get(roomNumbers).getStartX() < roomMap.get(leftmost).getStartX()) {
+                    leftmost = roomNumbers;
+                }
                 for (int j = 0; j < roomNumbers; j++) {
                     if (!wqu.connected(i, j)) {
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(j));
@@ -74,6 +79,12 @@ public class World {
                 }
             }
         }
+
+        //add avatar to leftmost room
+        int y = roomMap.get(leftmost).getStartY() + 1;
+        avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), leftmost + 1, y), "you");
+        tiles[leftmost + 1][y] = avatar;
+
     }
 
     //MISCELLANEOUS GETTERS AND SETTERS
