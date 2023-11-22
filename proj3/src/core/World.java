@@ -17,6 +17,8 @@ public class World {
     private WeightedQuickUnionUF wqu;
     private Random RANDOM;
 
+    private int[] aPos = new int[2];
+
     //setting custom tiles
     public static TETile wall = Tileset.CUSTOM_WALL;
     public static TETile floor = Tileset.CUSTOM_FLOOR;
@@ -81,9 +83,10 @@ public class World {
         }
 
         //add avatar to leftmost room
-        int y = roomMap.get(leftmost).getStartY() + 1;
-        avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), leftmost + 1, y), "you");
-        tiles[leftmost + 1][y] = avatar;
+        aPos[0] = leftmost + 1;
+        aPos[1] = roomMap.get(leftmost).getStartY() + 1;
+        avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
+        tiles[aPos[0]][aPos[1]] = avatar;
 
     }
 
@@ -96,6 +99,9 @@ public class World {
         return tiles;
     }
 
+    public int[] getAPos() {
+        return aPos;
+    }
     public TETile getFloor() {
         return floor;
     }

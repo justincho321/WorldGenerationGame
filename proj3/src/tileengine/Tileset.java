@@ -69,35 +69,7 @@ public class Tileset {
             }
         }
     }
-
-//    public static void colorGradientFloor2() {
-//        Graphics2D g2d = (Graphics2D) g;
-//
-//        Color startColor = Color.red;
-//        Color endColor = Color.blue;
-//
-//        int startX = 0, startY = 0, endX = 60, endY = 30;
-//
-//        GradientPaint gradient = new GradientPaint(startX, startY, startColor, endX, endY, endColor);
-//        g2d.setPaint(gradient);
-//        for (int i = 0; i < 60; i++) {
-//            for (int j = 0; j < 30; j++) {
-//                TETile floorTemp = new TETile('+', Color.lightGray, g2d.getColor(),
-//                        "custom floor");
-//            }
-//        }
-//    }
-    public class BasicDraw {
-        BasicDraw() {
-            JFrame frame = new JFrame();
-
-            frame.add(new MyComponent());
-
-            frame.setSize(300, 300);
-            frame.setVisible(true);
-        }
-
-    }
+    
     public static class MyComponent extends JComponent {
         static GradientPaint gradient;
         public void paint(Graphics g) {

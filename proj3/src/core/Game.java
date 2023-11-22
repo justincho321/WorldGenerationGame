@@ -28,13 +28,10 @@ public class Game {
     public void runGame(World world, int WIDTH, int HEIGHT) {
 
         HUD hud = new HUD();
+        Move move = new Move();
         TERenderer ter = new TERenderer();
         double xCurr = 0;
         double yCurr = 0;
-        //first index is X, second is Y position of avatar
-//        int[] aPos = new int[2];
-//        aPos[0] = 0;
-//        aPos[1] = 0;
 
 
         resetActionTimer();
@@ -53,6 +50,7 @@ public class Game {
 
                 //only rerender frame if press key or something else changes
                 if (StdDraw.hasNextKeyTyped()) {
+                    move.move(world.getTiles(), world.getAPos());
                     ter.renderFrame(world.getTiles());
                 }
 
@@ -63,7 +61,7 @@ public class Game {
                     xCurr = StdDraw.mouseX();
                     yCurr = StdDraw.mouseY();
                 }
-                StdDraw.pause(100);
+                //StdDraw.pause(100);
             }
         }
     }
