@@ -26,18 +26,6 @@ public class Main {
         ter.initialize(WIDTH, HEIGHT);
         ter.renderFrame(menu.getTiles());
 
-        long seed = menu.runMenu();
-
-        //gradient floors
-        Tileset.MyComponent gradient = new Tileset.MyComponent();
-        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = image.createGraphics();
-        gradient.paint(g);
-
-        //build the world, run the game
-        World world = new World(seed);
-        Game game = new Game();
-        game.runGame(world, WIDTH, HEIGHT);
-
+        menu.runMenu();
     }
 }

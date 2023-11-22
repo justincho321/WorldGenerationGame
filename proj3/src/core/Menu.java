@@ -1,15 +1,19 @@
 package core;
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 import java.awt.Font;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import static java.lang.Character.getNumericValue;
 
 public class Menu {
+    public static TETile avatar = Tileset.AVATAR;
     private TETile[][] tiles;
     private TETile nothing = Tileset.CUSTOM_NOTHING;
     private boolean keepMenu = true;
@@ -104,7 +108,7 @@ public class Menu {
         }
     }
 
-    public long runMenu() {
+    public void runMenu() {
         resetActionTimer();
         resetFrameTimer();
         renderMenu();
@@ -113,19 +117,53 @@ public class Menu {
             if (shouldRenderNewFrame()) {
                 if (StdDraw.hasNextKeyTyped()) {
                     char key = StdDraw.nextKeyTyped();
+                    //gradient floors
+                    Tileset.MyComponent gradient = new Tileset.MyComponent();
+                    BufferedImage image = new BufferedImage(60, 30, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g = image.createGraphics();
+                    gradient.paint(g);
                     if (key == 'N') {
                         StdDraw.clear(Color.BLACK);
                         seed = askSeed();
-                        return seed;
+
+                        //make/run world/game and ADD first avatar
+                        World world = new World(seed);
+                        world.addFirstAvatar();
+                        Game game = new Game();
+                        game.runGame(world, 60, 30);
                     } else if (key == 'L') {
-                        //loadGame();
+                        loadGame();
                     } else if (key == 'Q') {
                         //quit();
                     }
                 }
             }
         }
-        return 0000;
+    }
+
+    public void loadGame() {
+        File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
+        if (file.exists()) {
+            In in = new In(file);
+            String strSeed = in.readLine();
+            String positionStr = in.readLine();
+            String strAx = positionStr.split(",")[0];
+            String strAy = positionStr.split(",")[1];
+
+            int seed = Integer.parseInt(strSeed);
+            int aPosX = Integer.parseInt(strAx);
+            int aPosY = Integer.parseInt(strAy);
+
+            World world = new World(seed);
+            Game game = new Game();
+            avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
+            world.getTiles()[aPosX][aPosY] = avatar;
+            world.setAPos(new int[] {aPosX, aPosY});
+            game.runGame(world, 60, 30);
+
+        } else {
+            System.exit(0);
+        }
     }
 
 }

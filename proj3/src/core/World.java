@@ -19,6 +19,9 @@ public class World {
 
     private int[] aPos = new int[2];
 
+    private long seed;
+    private int leftmost;
+
     //setting custom tiles
     public static TETile wall = Tileset.CUSTOM_WALL;
     public static TETile floor = Tileset.CUSTOM_FLOOR;
@@ -29,6 +32,8 @@ public class World {
 
     //WORLD CONSTRUCTOR
     public World(long seed) {
+        //set argument seed to instance variable seed
+        this.seed = seed;
         //floor gradient intialize
         Tileset ts = new Tileset();
         RANDOM = new Random(seed);
@@ -67,10 +72,10 @@ public class World {
                 }
             }
         }
-        int leftmost = 0;
+        leftmost = 0;
         while (wqu.count() != 1) {
             for (int i = 0; i < roomNumbers; i++) {
-                if (roomMap.get(roomNumbers).getStartX() < roomMap.get(leftmost).getStartX()) {
+                if (roomMap.get(roomNumbers) != null && roomMap.get(roomNumbers).getStartX() < roomMap.get(leftmost).getStartX()) {
                     leftmost = roomNumbers;
                 }
                 for (int j = 0; j < roomNumbers; j++) {
@@ -81,16 +86,19 @@ public class World {
                 }
             }
         }
-
+    }
+    //ADD FIRST AVATAR
+    public void addFirstAvatar() {
         //add avatar to leftmost room
-        aPos[0] = leftmost + 1;
-        aPos[1] = roomMap.get(leftmost).getStartY() + 1;
+        aPos[0] = roomMap.get(this.getLeftmost()).getStartX() + 1;
+        aPos[1] = roomMap.get(this.getLeftmost()).getStartY() + 1;
         avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
         tiles[aPos[0]][aPos[1]] = avatar;
-
     }
-
     //MISCELLANEOUS GETTERS AND SETTERS
+    public int getLeftmost() {
+        return leftmost;
+    }
     public TETile[][] returnWorld() {
         return tiles;
     }
@@ -99,9 +107,27 @@ public class World {
         return tiles;
     }
 
+    public long getSeed() {
+        return seed;
+    }
+
     public int[] getAPos() {
+//        for (int i = 0; i < 60; i++) {
+//            for (int j = 0; j < 30; j++) {
+//                avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), i, j), "you");
+//                if (tiles[i][j] == avatar) {
+//                    return new int[] {i, j};
+//                }
+//            }
+//        }
         return aPos;
     }
+
+    public void setAPos(int[] aPos2) {
+        this.aPos[0] = aPos2[0];
+        this.aPos[1] = aPos2[1];
+    }
+
     public TETile getFloor() {
         return floor;
     }

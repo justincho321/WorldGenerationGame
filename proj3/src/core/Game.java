@@ -4,8 +4,12 @@ import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 
 public class Game {
+    private long lastSeed;
     private TETile[][] tiles;
     private TETile nothing = Tileset.CUSTOM_NOTHING;
     private boolean keepGame = true;
@@ -32,6 +36,7 @@ public class Game {
         TERenderer ter = new TERenderer();
         double xCurr = 0;
         double yCurr = 0;
+        boolean colon = false;
 
 
         resetActionTimer();
@@ -50,8 +55,16 @@ public class Game {
 
                 //only rerender frame if press key or something else changes
                 if (StdDraw.hasNextKeyTyped()) {
-                    move.move(world.getTiles(), world.getAPos());
-                    ter.renderFrame(world.getTiles());
+                    char key = StdDraw.nextKeyTyped();
+                    if (colon && key == 'Q') {
+                        saveAndQuit(world);
+                        colon = false;
+                    } else if (key == ':') {
+                        colon = true;
+                    } else {
+                        move.move(world, world.getAPos(), key);
+                        ter.renderFrame(world.getTiles());
+                    }
                 }
 
                 //only rerender HUD if mouse cursor moves
@@ -64,6 +77,28 @@ public class Game {
                 //StdDraw.pause(100);
             }
         }
+    }
+
+    public void saveAndQuit(World world) {
+        File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
+        if (file.exists()) {
+            file.delete();
+        }
+        lastSeed = world.getSeed();
+
+        //save avatar position
+        String aPos = world.getAPos()[0] + "," + world.getAPos()[1];
+        try {
+            FileWriter myWriter = new FileWriter(file);
+            myWriter.write(lastSeed + "\n");
+            myWriter.write(aPos);
+            myWriter.close();
+            System.out.println("Successfully saved the game file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 
     /**
