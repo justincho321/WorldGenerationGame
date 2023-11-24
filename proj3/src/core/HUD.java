@@ -5,6 +5,7 @@ import tileengine.TETile;
 import tileengine.Tileset;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class HUD {
 
@@ -16,12 +17,12 @@ public class HUD {
 
     //constructor
     public HUD() {
-
     }
 
-    public void renderHUD(TETile[][] tiles) {
-
+    public void renderHUD(World world) {
+        //display the tile the cursor is hovering over in top left corner
         String pos = "";
+        TETile[][] tiles = world.getTiles();
         int HUDval = HUDval(tiles);
         if (HUDval == 0) {
             pos = "Nothing";
@@ -34,11 +35,17 @@ public class HUD {
         }
 
         StdDraw.setPenColor(255, 255, 255);
-
         Font bigFont = new Font("Monospaced", Font.BOLD, 15);
         StdDraw.setFont(bigFont);
         StdDraw.text(2, 32, "Tile:");
         StdDraw.text(5.5, 32, pos);
+        //display the avatar name in top right corner
+        String aName = world.getAvatarName();
+        if (aName == null) {
+            aName = "?";
+        }
+        int nameLength = aName.length();
+        StdDraw.text(57 - (nameLength * 0.4), 32, "Player: " + aName);
         StdDraw.show();
     }
 

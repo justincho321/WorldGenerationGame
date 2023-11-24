@@ -343,32 +343,174 @@ public class Hall {
 
         //TOP RIGHT QUADRANT
         if (room.startY > 15 && room.startX > 30) {
-            connectRoomTopRightHelper(world, room);
-
+//            connectRoomTopRightHelper(world, room);
+            boolean temp = connectRoomHelperX(world, room, 'l', 'd');
+            if (!temp) {
+                connectRoomHelperY(world, room, 'd', 'l');
+            }
         }
         //BOTTOM RIGHT QUADRANT
         if (room.startY < 16 && room.startX > 30) {
-            connectRoomBottomRightHelper(world, room);
-
+//            connectRoomBottomRightHelper(world, room);
+            boolean temp = connectRoomHelperX(world, room, 'l', 'u');
+            if (!temp) {
+                connectRoomHelperY(world, room, 'u', 'l');
+            }
         }
 
         //TOP LEFT QUADRANT
         if (room.startY > 15 && room.startX < 31) {
-            connectRoomTopLeftHelper(world, room);
+//            connectRoomTopLeftHelper(world, room);
+            boolean temp = connectRoomHelperX(world, room, 'r', 'd');
+            if (!temp) {
+                connectRoomHelperY(world, room, 'd', 'r');
+            }
         }
 
-        //if bottom left quadrant
+        //BOTTOM LEFT QUADRANT
         if (room.startY < 16 && room.startX < 31) {
-            connectRoomBottomLeftHelper(world, room);
+//            connectRoomBottomLeftHelper(world, room);
+            boolean temp = connectRoomHelperX(world, room, 'r', 'u');
+            if (!temp) {
+                connectRoomHelperY(world, room, 'u', 'r');
+            }
         }
     }
 
+    private static boolean connectRoomHelperX(World world, Room room, char direction1, char direction2) {
+        TETile wall = world.getWall();
+        TETile[][] tiles = world.getTiles();
+        WeightedQuickUnionUF wqu = world.getWQU();
+        int finalRoomNum = 0;
+        int increment1 = 1; //default to 1 if building to the right
+        int increment2 = -1;
+        int mult2 = 1;
+        int multiplier = 1; //fo r building up/down
+        int coord = 0; //for make border room method
+        if (direction1 == 'l') { //build to the left
+            increment1 = -1;
+            increment2 = 1;
+            mult2 = 0;
+        }
+        if (direction2 == 'd') {
+            multiplier = -1;
+        }
+        for (int i = room.startX + (room.width * mult2); i >= 0 && i < 60; i += increment1) {
+            if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
+                tiles[i][room.startY + 2] = wall;
+            }
+            if (tiles[i][room.startY + 1] == Tileset.fG[i][room.startY + 1]) {
+                //if we reached a floor of another hallway or room, check if we're in a room.
+                // if not, traverse the floor until we reach a room then connect that room with our room.
+                if (Room.findRoomNumber(world, i, room.startY + 1) == -1) {
+                    if (tiles[i][room.startY] == Tileset.fG[i][room.startY]) {
+                        int j = 1;
+                        if (tiles[i + 1][room.startY] == Tileset.fG[i + 1][room.startY]) {
+                            wqu.union(finalRoomNum, room.num);
+                            return true;
+                        }
+                        //traverse up or down until you reach a room
+                        while (Room.findRoomNumber(world, i, room.startY + (j * multiplier)) == -1) {
+                            j ++;
+                            if (room.startY + (j * multiplier) < 0 || room.startY + (j * multiplier) == 30) {
+                                return false;
+                            }
+                        }
+                        finalRoomNum = Room.findRoomNumber(world, i, room.startY + (j * multiplier));
+                        wqu.union(finalRoomNum, room.num);
+                        return true;
+                    }
+                } else {
+                    wqu.union(finalRoomNum, room.num);
+                    return true;
+                }
+            } else {
+                tiles[i][room.startY + 1] = Tileset.fG[i][room.startY + 1];
+            }
+            if (tiles[i][room.startY] != Tileset.fG[i][room.startY]) {
+                tiles[i][room.startY] = wall;
+            }
+            coord = room.startY + 1;
+        }
+        //build border rooms in the event that a hallway reaches the end of the world
+        if (direction1 == 'l') {
+            Room.makeBorderRoomX(world, 'w', coord);
+        } else {
+            Room.makeBorderRoomX(world, 'e', coord);
+        }
+        return false;
+    }
+
+    private static boolean connectRoomHelperY(World world, Room room, char direction1, char direction2) {
+        TETile wall = world.getWall();
+        TETile[][] tiles = world.getTiles();
+        WeightedQuickUnionUF wqu = world.getWQU();
+        int finalRoomNum = 0;
+        int increment1 = 1;
+        int increment2 = -1;
+        int mult2 = 1;
+        int multiplier = 1;
+        int coord = 0;
+        if (direction1 == 'd') {
+            increment1 = -1;
+            increment2 = 1;
+            mult2 = 0;
+        }
+        if (direction2 == 'l') {
+            multiplier = -1;
+        }
+        for (int i = room.startY + (room.height * mult2); i >= 0 && i < 30; i += increment1) {
+            if (tiles[room.startX + 2][i] != Tileset.fG[room.startX + 2][i]) {
+                tiles[room.startX + 2][i] = wall;
+            }
+            if (tiles[room.startX + 1][i] == Tileset.fG[room.startX + 1][i]) {
+                //if we reached a floor of another hallway or room, check if we're in a room...see above
+                if (Room.findRoomNumber(world, room.startX + 1, i) == -1) {
+                    if (tiles[room.startX][i] == Tileset.fG[room.startX][i]) {
+                        int j = 1;
+                        if (tiles[room.startX][i + 1] == Tileset.fG[room.startX][i + 1]) {
+                            wqu.union(finalRoomNum, room.num);
+                            return true;
+                        }
+                        //build left until you reach a room
+                        while (Room.findRoomNumber(world, room.startX + (j * multiplier), i) == -1) {
+                            j++;
+                            if (room.startX + (j * multiplier) < 0 || room.startX + (j * multiplier) == 60) {
+                                return false;
+                            }
+                        }
+                        finalRoomNum = Room.findRoomNumber(world, room.startX + (j * multiplier), i);
+                        wqu.union(finalRoomNum, room.num);
+                        return true;
+                    } else {
+                        wqu.union(finalRoomNum, room.num);
+                        return true;
+                    }
+                }
+            } else {
+                tiles[room.startX + 1][i] = Tileset.fG[room.startX + 1][i];
+            }
+            if (tiles[room.startX][i] != Tileset.fG[room.startX][i]) {
+                tiles[room.startX][i] = wall;
+            }
+            coord = room.startX + 1;
+        }
+        if (direction1 == 'd') {
+            Room.makeBorderRoomY(world, 's', coord);
+        } else {
+            Room.makeBorderRoomY(world, 'n', coord);
+        }
+        return false;
+    }
     private static void connectRoomTopRightHelper(World world, Room room) {
         TETile wall = world.getWall();
         TETile[][] tiles = world.getTiles();
         WeightedQuickUnionUF wqu = world.getWQU();
         int finalRoomNum = 0;
         //build left
+//        if (Room.checkStructure('w', room.startY + 2)) {
+//
+//        }
         for (int i = room.startX; i >= 0; i--) {
             if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
                 tiles[i][room.startY + 2] = wall;
@@ -383,7 +525,7 @@ public class Hall {
                             wqu.union(finalRoomNum, room.num);
                             return;
                         }
-                        //build down until you reach a room
+                        //traverse down until you reach a room
                         while (Room.findRoomNumber(world, i, room.startY - j) == -1) {
                             j++;
                             if (room.startY - j < 0) {

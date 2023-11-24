@@ -22,6 +22,10 @@ public class World {
     private long seed;
     private int leftmost;
 
+    private String avatarName = "";
+
+    boolean lightsOff;
+
     //setting custom tiles
     public static TETile wall = Tileset.CUSTOM_WALL;
     public static TETile floor = Tileset.CUSTOM_FLOOR;
@@ -34,6 +38,8 @@ public class World {
     public World(long seed) {
         //set argument seed to instance variable seed
         this.seed = seed;
+        //set lights on/off (initially it's false)
+        lightsOff = false;
         //floor gradient intialize
         Tileset ts = new Tileset();
         RANDOM = new Random(seed);
@@ -111,15 +117,20 @@ public class World {
         return seed;
     }
 
+    public TETile[][] getLitSurrounding() {
+        Light light = new Light();
+        return light.litSurrounding(this, this.getAPos());
+    }
+
+    public boolean getLightsOff() {
+        return lightsOff;
+    }
+
+    public void setLights(boolean lightsOff) {
+        this.lightsOff = lightsOff;
+    }
+
     public int[] getAPos() {
-//        for (int i = 0; i < 60; i++) {
-//            for (int j = 0; j < 30; j++) {
-//                avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), i, j), "you");
-//                if (tiles[i][j] == avatar) {
-//                    return new int[] {i, j};
-//                }
-//            }
-//        }
         return aPos;
     }
 
@@ -138,6 +149,14 @@ public class World {
 
     public TETile getNothing() {
         return nothing;
+    }
+
+    public String getAvatarName() {
+        return avatarName;
+    }
+
+    public void setAvatarName(String name) {
+        avatarName = name;
     }
 
     public WeightedQuickUnionUF getWQU() {

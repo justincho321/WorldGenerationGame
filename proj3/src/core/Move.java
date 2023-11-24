@@ -13,7 +13,7 @@ public class Move {
     TETile nothing = World.nothing;
     TETile avatar = World.avatar;
 
-    public void move(World world, int[] aPos, char key) {
+    public void move(World world, int[] aPos, char key, boolean lightsOff) {
         TETile[][] tiles = world.getTiles();
         int x = aPos[0];
         int y = aPos[1];
@@ -59,7 +59,6 @@ public class Move {
 
             }
         }
-
     }
 
 }

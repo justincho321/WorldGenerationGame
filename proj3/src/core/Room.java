@@ -10,8 +10,10 @@ public class Room {
     int startY;
     int width;
     int height;
-    //public static TETile[][] fG = Tileset.floorGradient;
     static TETile floor;
+    public static TETile wall = Tileset.CUSTOM_WALL;
+    public static TETile nothing = Tileset.CUSTOM_NOTHING;
+    public static TETile avatar = Tileset.AVATAR;
 
     //CONSTRUCTOR
     public Room(int num, int startX, int startY, int roomWidth, int roomHeight) {
@@ -230,4 +232,97 @@ public class Room {
         return returnArray;
     }
 
+    public static boolean checkStructure(char direction, int coord) {
+        return true;
+    }
+
+    public static void makeBorderRoomY(World world, char side, int coord) {
+        TETile[][] tiles = world.getTiles();
+        if (side == 'n') {
+            for (int i = coord - 2; i < coord + 3; i++) {
+                if (i >= 0 && i < 60) {
+                    tiles[i][29] = wall;
+                    if (i == coord - 2 || i == coord + 2) {
+                        if (tiles[i][28] == nothing) {
+                            tiles[i][28] = wall;
+                        }
+                        if (tiles[i][27] == nothing) {
+                            tiles[i][27] = wall;
+                        }
+                        if (tiles[i][26] == nothing) {
+                            tiles[i][26] = wall;
+                        }
+                    } else if (i == coord - 1 || i == coord + 1) {
+                        tiles[i][28] = Tileset.fG[i][28];
+                        tiles[i][27] = Tileset.fG[i][27];
+                    }
+                }
+            }
+        } else if (side == 's') {
+            for (int i = coord - 2; i < coord + 3; i++) {
+                if (i >= 0 && i < 60) {
+                    tiles[i][0] = wall;
+                    if (i == coord - 2 || i == coord + 2) {
+                        if (tiles[i][0] == nothing) {
+                            tiles[i][0] = wall;
+                        }
+                        if (tiles[i][1] == nothing) {
+                            tiles[i][1] = wall;
+                        }
+                        if (tiles[i][2] == nothing) {
+                            tiles[i][2] = wall;
+                        }
+                    } else if (i == coord - 1 || i == coord + 1) {
+                        tiles[i][1] = Tileset.fG[i][0];
+                        tiles[i][2] = Tileset.fG[i][1];
+                    }
+                }
+            }
+        }
+    }
+
+    public static void makeBorderRoomX(World world, char side, int coord) {
+        TETile[][] tiles = world.getTiles();
+        if (side == 'e') {
+            for (int i = coord - 2; i < coord + 3; i++) {
+                if (i >= 0 && i < 30) {
+                    tiles[59][i] = wall;
+                    if (i == coord - 2 || i == coord + 2) { //the far borders--put walls
+                        if (tiles[58][i] == nothing) {
+                            tiles[58][i] = wall;
+                        }
+                        if (tiles[57][i] == nothing) {
+                            tiles[57][i] = wall;
+                        }
+                        if (tiles[56][i] == nothing) {
+                            tiles[56][i] = wall;
+                        }
+                    } else if (i == coord - 1 || i == coord + 1) { //inside--put floor
+                        tiles[58][i] = Tileset.fG[58][i];
+                        tiles[57][i] = Tileset.fG[57][i];
+                    }
+                }
+            }
+        } else if (side == 'w') {
+            for (int i = coord - 2; i < coord + 3; i++) {
+                if (i >= 0 && i < 30) {
+                    tiles[0][i] = wall;
+                    if (i == coord - 2 || i == coord + 2) { //the far borders--put walls
+                        if (tiles[1][i] == nothing) {
+                            tiles[1][i] = wall;
+                        }
+                        if (tiles[2][i] == nothing) {
+                            tiles[2][i] = wall;
+                        }
+                        if (tiles[3][i] == nothing) {
+                            tiles[3][i] = wall;
+                        }
+                    } else if (i == coord - 1 || i == coord + 1) { //inside--put floor
+                        tiles[1][i] = Tileset.fG[1][i];
+                        tiles[2][i] = Tileset.fG[2][i];
+                    }
+                }
+            }
+        }
+    }
 }

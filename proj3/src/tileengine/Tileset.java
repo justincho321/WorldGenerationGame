@@ -75,7 +75,7 @@ public class Tileset {
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
 
-            Color startColor = new Color(39, 110, 9);
+            Color startColor = new Color(204, 84, 199);
             Color endColor = new Color(143, 182, 238);
 
             int startX = 0, startY = 0, endX = 60, endY = 30;
@@ -130,6 +130,9 @@ public class Tileset {
     public static final TETile AVATAR = new TETile('@', Color.white, Color.black, "you");
     public static final TETile WALL = new TETile('#', new Color(216, 128, 128), Color.darkGray,
             "wall");
+
+    public static final TETile MASK = new TETile(' ', Color.black, Color.black,
+            "MASK");
 
     public static final TETile CUSTOM_WALL = new TETile('#', Color.lightGray, Color.lightGray,
             "custom wall");

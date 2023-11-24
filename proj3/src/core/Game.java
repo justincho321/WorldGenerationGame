@@ -10,6 +10,7 @@ import java.io.FileWriter;
 
 public class Game {
     private long lastSeed;
+    private String aName;
     private TETile[][] tiles;
     private TETile nothing = Tileset.CUSTOM_NOTHING;
     private boolean keepGame = true;
@@ -17,6 +18,7 @@ public class Game {
     }
     private long prevActionTimestamp;
     private long prevFrameTimestamp;
+    boolean lightsOff;
 
     //Constructor
     public Game() {
@@ -37,17 +39,19 @@ public class Game {
         double xCurr = 0;
         double yCurr = 0;
         boolean colon = false;
-
+        lightsOff = world.getLightsOff();
 
         resetActionTimer();
         resetFrameTimer();
 
         ter.initialize(WIDTH, HEIGHT + 3);
-        ter.renderFrame(world.getTiles());
-
-        //maybe don't need if we have ter.renderFrame
-        //renderGame();
-        hud.renderHUD(world.getTiles());
+        if (lightsOff) {
+            TETile[][] lightGrid = world.getLitSurrounding();
+            ter.renderFrame(lightGrid);
+        } else {
+            ter.renderFrame(world.getTiles());
+            hud.renderHUD(world);
+        }
 
         while (keepGame) {
             if (shouldRenderNewFrame()) {
@@ -61,18 +65,44 @@ public class Game {
                         colon = false;
                     } else if (key == ':') {
                         colon = true;
+                    } else if (key == 'f') {
+                        if (lightsOff) { //so turn on
+                            ter.renderFrame(world.getTiles());
+                            hud.renderHUD(world);
+                            lightsOff = false;
+                        } else { //so turn off
+                            TETile[][] lightGrid = world.getLitSurrounding();
+                            ter.renderFrame(lightGrid);
+                            //hud.renderHUD(world);
+                            lightsOff = true;
+                        }
                     } else {
-                        move.move(world, world.getAPos(), key);
-                        ter.renderFrame(world.getTiles());
+                        move.move(world, world.getAPos(), key, lightsOff);
+
+                        //if lights are off, then change the light grid accordingly
+                        if (lightsOff) {
+                            TETile[][] lightGrid = world.getLitSurrounding();
+                            ter.renderFrame(lightGrid);
+                            //hud.renderHUD(world);
+                        } else { //otherwise rerender the full world
+                            ter.renderFrame(world.getTiles());
+                            hud.renderHUD(world);
+
+                        }
                     }
                 }
-
                 //only rerender HUD if mouse cursor moves
                 if (StdDraw.mouseX() != xCurr || StdDraw.mouseY() != yCurr) {
-                    ter.renderFrame(world.getTiles());
-                    hud.renderHUD(world.getTiles());
-                    xCurr = StdDraw.mouseX();
-                    yCurr = StdDraw.mouseY();
+                    if (lightsOff) {
+                        TETile[][] lightGrid = world.getLitSurrounding();
+                        ter.renderFrame(lightGrid);
+                        hud.renderHUD(world);
+                    } else {
+                        ter.renderFrame(world.getTiles());
+                        hud.renderHUD(world);
+                        xCurr = StdDraw.mouseX();
+                        yCurr = StdDraw.mouseY();
+                    }
                 }
                 //StdDraw.pause(100);
             }
@@ -85,13 +115,18 @@ public class Game {
             file.delete();
         }
         lastSeed = world.getSeed();
+        aName = world.getAvatarName();
 
         //save avatar position
         String aPos = world.getAPos()[0] + "," + world.getAPos()[1];
         try {
             FileWriter myWriter = new FileWriter(file);
-            myWriter.write(lastSeed + "\n");
-            myWriter.write(aPos);
+            myWriter.write(lastSeed + "\n"); //first line seed
+            myWriter.write(aPos + "\n"); //second line avatar position
+            myWriter.write(lightsOff + "\n"); //third line lights on/off
+            if (aName != null) { //fourth line avatar name (if any)
+                myWriter.write(aName);
+            }
             myWriter.close();
             System.out.println("Successfully saved the game file.");
         } catch (IOException e) {
