@@ -6,6 +6,7 @@ import tileengine.Tileset;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
@@ -117,8 +118,8 @@ public class AutograderBuddy {
                 //save avatar position
                 String aPos = world.getAPos()[0] + "," + world.getAPos()[1];
                 try {
-                    FileWriter myWriter =
-                            new FileWriter("file://C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
+                    File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
+                    FileWriter myWriter = new FileWriter(file);
                     myWriter.write(lastSeed + "\n"); //first line seed
                     myWriter.write(aPos + "\n"); //second line avatar position
                     myWriter.write(lightsOff + "\n"); //third line lights on/off
@@ -166,8 +167,8 @@ public class AutograderBuddy {
     }
 
     public TETile[][] autoLoadGame() {
-
-        In in = new In("file://C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
+        File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
+        In in = new In(file);
         String strSeed = in.readLine();
         String positionStr = in.readLine();
         String strAx = positionStr.split(",")[0];
