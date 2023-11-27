@@ -119,6 +119,7 @@ public class AutograderBuddy {
                 String aPos = world.getAPos()[0] + "," + world.getAPos()[1];
                 try {
                     File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
+                    //Path file = Paths.get("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
                     FileWriter myWriter = new FileWriter(file);
                     myWriter.write(lastSeed + "\n"); //first line seed
                     myWriter.write(aPos + "\n"); //second line avatar position
@@ -167,8 +168,9 @@ public class AutograderBuddy {
     }
 
     public TETile[][] autoLoadGame() {
+
         File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
-        if (file.exists()) {
+        if (file.length() > 0) {
             In in = new In(file);
             String strSeed = in.readLine();
             String positionStr = in.readLine();

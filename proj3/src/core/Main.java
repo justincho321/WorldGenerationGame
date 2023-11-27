@@ -10,18 +10,19 @@ public class Main {
     private static final int HEIGHT = 30;
 
     public static void main(String[] args) {
-        //AutograderBuddy.getWorldFromInput("n1392967723524655428sddsaawwsaddw:Qlwwd");
+        AutograderBuddy.getWorldFromInput("n1392967723524655428sddsaawws:q");
+        AutograderBuddy.getWorldFromInput("laddw");
         //populate floorGradient array
 
-        fG = new TETile[60][30];
-        Tileset.colorGradient(fG);
-
-        //render main menu page
-        Menu menu = new Menu(WIDTH, HEIGHT);
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        ter.renderFrame(menu.getTiles());
-
-        menu.runMenu();
+//        fG = new TETile[60][30];
+//        Tileset.colorGradient(fG);
+//
+//        //render main menu page
+//        Menu menu = new Menu(WIDTH, HEIGHT);
+//        TERenderer ter = new TERenderer();
+//        ter.initialize(WIDTH, HEIGHT);
+//        ter.renderFrame(menu.getTiles());
+//
+//        menu.runMenu();
     }
 }
