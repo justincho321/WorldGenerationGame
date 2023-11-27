@@ -129,7 +129,13 @@ public class AutograderBuddy {
                     e.printStackTrace();
                 }
                 colon = false;
-                return world.getTiles();
+                TETile[][] defaultTiles = new TETile[60][30];
+                for (int x = 0; x < 60; x++) {
+                    for (int p = 0; p < 30; p++) {
+                        defaultTiles[x][p] = Tileset.CUSTOM_NOTHING;
+                    }
+                }
+                return defaultTiles;
             } else if (key == ':') {
                 colon = true;
             } else if (key == 'f' || key == 'F') {
