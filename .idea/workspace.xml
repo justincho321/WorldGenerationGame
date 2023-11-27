@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3571eecd-de39-4fb0-80b8-e1f4e6e58010" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/proj3/saveGame.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/proj3/src/core/AutograderBuddy.java" beforeDir="false" afterPath="$PROJECT_DIR$/proj3/src/core/AutograderBuddy.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
