@@ -8,11 +8,11 @@ import java.awt.*;
 
 public class HUD {
 
-    TETile floor = World.floor;
+    TETile floor = World.FLOOR;
     TETile[][] floors = Tileset.fG;
-    TETile wall = World.wall;
-    TETile nothing = World.nothing;
-    TETile avatar = World.avatar;
+    TETile wall = World.WALL;
+    TETile nothing = World.NOTHING;
+    //TETile avatar = World.avatar;
 
     //constructor
     public HUD() {
@@ -22,7 +22,7 @@ public class HUD {
         //display the tile the cursor is hovering over in top left corner
         String pos = "";
         TETile[][] tiles = world.getTiles();
-        int hudVal = hudVal(tiles);
+        int hudVal = hudVal(world, tiles);
         if (hudVal == 0) {
             pos = "Nothing";
         } else if (hudVal == 1) {
@@ -48,7 +48,7 @@ public class HUD {
         StdDraw.show();
     }
 
-    public int hudVal(TETile[][] tiles) {
+    public int hudVal(World world, TETile[][] tiles) {
         double dX = StdDraw.mouseX();
         //int x = (int) Math.round(dX);
         int x = ((Double) dX).intValue();
@@ -61,7 +61,7 @@ public class HUD {
             return 0;
         } else if (tiles[x][y] == wall) {
             return 1;
-        } else if (tiles[x][y] == avatar) {
+        } else if (tiles[x][y] == world.getAvatar()) {
             return 2;
         } else if (tiles[x][y] == floors[x][y]) {
             return 3;

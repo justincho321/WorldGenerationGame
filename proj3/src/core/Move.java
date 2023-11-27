@@ -6,13 +6,13 @@ import tileengine.Tileset;
 import java.awt.*;
 
 public class Move {
-    TETile floor = World.floor;
+    TETile floor = World.FLOOR;
     TETile[][] floors = Tileset.fG;
-    TETile wall = World.wall;
-    TETile nothing = World.nothing;
-    TETile avatar = World.avatar;
+    TETile wall = World.WALL;
+    TETile nothing = World.NOTHING;
 
     public void move(World world, int[] aPos, char key, boolean lightsOff) {
+        TETile avatar;
         TETile[][] tiles = world.getTiles();
         int x = aPos[0];
         int y = aPos[1];

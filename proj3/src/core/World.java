@@ -27,10 +27,10 @@ public class World {
     boolean lightsOff;
 
     //setting custom tiles
-    static TETile wall = Tileset.CUSTOM_WALL;
-    static TETile floor = Tileset.CUSTOM_FLOOR;
-    static TETile nothing = Tileset.CUSTOM_NOTHING;
-    static TETile avatar = Tileset.AVATAR;
+    static final TETile WALL = Tileset.CUSTOM_WALL;
+    static final TETile FLOOR = Tileset.CUSTOM_FLOOR;
+    static final TETile NOTHING = Tileset.CUSTOM_NOTHING;
+    private TETile avatar = Tileset.AVATAR;
 
     //private Tileset ts;
 
@@ -47,7 +47,7 @@ public class World {
         tiles = new TETile[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                tiles[x][y] = nothing;
+                tiles[x][y] = NOTHING;
             }
         }
         //populate and make randomized world helper method
@@ -141,16 +141,23 @@ public class World {
         this.aPos[1] = aPos2[1];
     }
 
+    public TETile getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(TETile a) {
+        avatar = a;
+    }
     public TETile getFloor() {
-        return floor;
+        return FLOOR;
     }
 
     public TETile getWall() {
-        return wall;
+        return WALL;
     }
 
     public TETile getNothing() {
-        return nothing;
+        return NOTHING;
     }
 
     public String getAvatarName() {

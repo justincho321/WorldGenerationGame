@@ -5,6 +5,9 @@ import tileengine.Tileset;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Objects;
 
 import static tileengine.Tileset.fG;
@@ -47,7 +50,7 @@ public class AutograderBuddy {
                     Menu menu = new Menu(60, 30);
                     menu.loadGame();
                 } else if (input.charAt(i) == 'Q' || input.charAt(i) == 'q') {
-                    System.exit(0);
+                    return world.getTiles();
                 } else if (input.charAt(i) == 'A' || input.charAt(i) == 'a') {
                     for (int j = i; j < input.length(); j++) {
                         if (input.charAt(j) == '+') {
@@ -81,19 +84,40 @@ public class AutograderBuddy {
         AutograderBuddy auto = new AutograderBuddy();
         boolean colon = false;
         boolean lightsOff = world.getLightsOff();
-        auto.autoHelper(world, z, input, colon, game, game.lightsOff, hud, move);
-
-        return world.getTiles();
+        return auto.autoHelper(world, z, input, colon, game, lightsOff, hud, move);
     }
 
-    private void autoHelper(World world, int z, String input, boolean colon,
+    private TETile[][] autoHelper(World world, int z, String input, boolean colon,
                             Game game, boolean lightsOff, HUD hud, Move move) {
         //TERenderer ter = new TERenderer();
         for (int i = z; i < input.length(); i++) {
             char key = input.charAt(i);
             if (colon && (key == 'Q' || key == 'q')) {
-                game.saveAndQuit(world);
+                File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
+                if (file.exists()) {
+                    file.delete();
+                }
+                long lastSeed = world.getSeed();
+                String aName = world.getAvatarName();
+
+                //save avatar position
+                String aPos = world.getAPos()[0] + "," + world.getAPos()[1];
+                try {
+                    FileWriter myWriter = new FileWriter(file);
+                    myWriter.write(lastSeed + "\n"); //first line seed
+                    myWriter.write(aPos + "\n"); //second line avatar position
+                    myWriter.write(lightsOff + "\n"); //third line lights on/off
+                    if (aName != null) { //fourth line avatar name (if any)
+                        myWriter.write(aName);
+                    }
+                    myWriter.close();
+                    System.out.println("Successfully saved the game file.");
+                } catch (IOException e) {
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
+                }
                 colon = false;
+                return world.getTiles();
             } else if (key == ':') {
                 colon = true;
             } else if (key == 'f' || key == 'F') {
@@ -117,6 +141,7 @@ public class AutograderBuddy {
                 }
             }
         }
+        return world.getTiles();
     }
 
 
