@@ -10,10 +10,10 @@ public class Room {
     int startY;
     int width;
     int height;
-    static TETile floor;
-    private static TETile wall = Tileset.CUSTOM_WALL;
-    private static TETile nothing = Tileset.CUSTOM_NOTHING;
-    private static TETile avatar = Tileset.AVATAR;
+    private TETile floor;
+    private static final TETile WALL = Tileset.CUSTOM_WALL;
+    private static final TETile NOTHING = Tileset.CUSTOM_NOTHING;
+    private static final TETile AVATAR = Tileset.AVATAR;
 
     //CONSTRUCTOR
     public Room(int num, int startX, int startY, int roomWidth, int roomHeight) {
@@ -101,7 +101,7 @@ public class Room {
             TETile second = world.getTiles()[roomStartWidth + (j * multiplier1)][ceiling];
             int[] results = Room.checkMidWallCase(world, firstX, firstY, "y");
             if (results[0] == 1 && results[1] != -1) {
-                floor = Tileset.fG[roomStartWidth + (j * multiplier1)][roomStartHeight];
+                TETile floor = Tileset.fG[roomStartWidth + (j * multiplier1)][roomStartHeight];
                 world.getTiles()[roomStartWidth + (j * multiplier1)][roomStartHeight] = floor;
                 //check which room we are combining with and union them with our wqu
                 world.getWQU().union(roomNumber, results[1]);
@@ -110,7 +110,7 @@ public class Room {
             }
             results = Room.checkMidWallCase(world, secondX, secondY, "y");
             if (results[0] == 1 && results[1] != -1) {
-                floor = Tileset.fG[roomStartWidth + (j * multiplier1)][ceiling];
+                TETile floor = Tileset.fG[roomStartWidth + (j * multiplier1)][ceiling];
                 world.getTiles()[roomStartWidth + (j * multiplier1)][ceiling] = floor;
                 world.getWQU().union(roomNumber, results[1]);
             } else if (second != Tileset.fG[roomStartWidth + (j * multiplier1)][ceiling]) {
@@ -127,7 +127,7 @@ public class Room {
             TETile fourth = world.getTiles()[fourthX][fourthY];
             int[] results = Room.checkMidWallCase(world, thirdX, thirdY, "x");
             if (results[0] == 1 && results[1] != -1) {
-                floor = Tileset.fG[roomStartWidth][roomStartHeight + (k * multiplier2)];
+                TETile floor = Tileset.fG[roomStartWidth][roomStartHeight + (k * multiplier2)];
                 world.getTiles()[roomStartWidth][roomStartHeight + (k * multiplier2)] = floor;
                 world.getWQU().union(roomNumber, results[1]);
             } else if (third != Tileset.fG[thirdX][thirdY]) {
@@ -135,7 +135,7 @@ public class Room {
             }
             results = Room.checkMidWallCase(world, fourthX, fourthY, "x");
             if (results[0] == 1 && results[1] != -1) {
-                floor = Tileset.fG[oppWall][roomStartHeight + (k * multiplier2)];
+                TETile floor = Tileset.fG[oppWall][roomStartHeight + (k * multiplier2)];
                 world.getTiles()[oppWall][roomStartHeight + (k * multiplier2)] = floor;
                 world.getWQU().union(roomNumber, results[1]);
             } else if (fourth != Tileset.fG[fourthX][fourthY]) {
@@ -228,25 +228,21 @@ public class Room {
         return returnArray;
     }
 
-    public static boolean checkStructure(char direction, int coord) {
-        return true;
-    }
-
     public static void makeBorderRoomY(World world, char side, int coord) {
         TETile[][] tiles = world.getTiles();
         if (side == 'n') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 60) {
-                    tiles[i][29] = wall;
+                    tiles[i][29] = WALL;
                     if (i == coord - 2 || i == coord + 2) {
-                        if (tiles[i][28] == nothing) {
-                            tiles[i][28] = wall;
+                        if (tiles[i][28] == NOTHING) {
+                            tiles[i][28] = WALL;
                         }
-                        if (tiles[i][27] == nothing) {
-                            tiles[i][27] = wall;
+                        if (tiles[i][27] == NOTHING) {
+                            tiles[i][27] = WALL;
                         }
-                        if (tiles[i][26] == nothing) {
-                            tiles[i][26] = wall;
+                        if (tiles[i][26] == NOTHING) {
+                            tiles[i][26] = WALL;
                         }
                     } else if ((i > 0 && i < 59) && (i == coord - 1 || i == coord + 1)) {
                         tiles[i][28] = Tileset.fG[i][28];
@@ -260,16 +256,16 @@ public class Room {
         } else if (side == 's') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 60) {
-                    tiles[i][0] = wall;
+                    tiles[i][0] = WALL;
                     if (i == coord - 2 || i == coord + 2) {
-                        if (tiles[i][0] == nothing) {
-                            tiles[i][0] = wall;
+                        if (tiles[i][0] == NOTHING) {
+                            tiles[i][0] = WALL;
                         }
-                        if (tiles[i][1] == nothing) {
-                            tiles[i][1] = wall;
+                        if (tiles[i][1] == NOTHING) {
+                            tiles[i][1] = WALL;
                         }
-                        if (tiles[i][2] == nothing) {
-                            tiles[i][2] = wall;
+                        if (tiles[i][2] == NOTHING) {
+                            tiles[i][2] = WALL;
                         }
                     } else if ((i > 0 && i < 59) && (i == coord - 1 || i == coord + 1)) {
                         tiles[i][1] = Tileset.fG[i][0];
@@ -288,16 +284,16 @@ public class Room {
         if (side == 'e') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 30) {
-                    tiles[59][i] = wall;
+                    tiles[59][i] = WALL;
                     if (i == coord - 2 || i == coord + 2) { //the far borders--put walls
-                        if (tiles[58][i] == nothing) {
-                            tiles[58][i] = wall;
+                        if (tiles[58][i] == NOTHING) {
+                            tiles[58][i] = WALL;
                         }
-                        if (tiles[57][i] == nothing) {
-                            tiles[57][i] = wall;
+                        if (tiles[57][i] == NOTHING) {
+                            tiles[57][i] = WALL;
                         }
-                        if (tiles[56][i] == nothing) {
-                            tiles[56][i] = wall;
+                        if (tiles[56][i] == NOTHING) {
+                            tiles[56][i] = WALL;
                         }
                     } else if ((i > 0 && i < 29) && (i == coord - 1 || i == coord + 1)) { //inside--put floor
                         tiles[58][i] = Tileset.fG[58][i];
@@ -311,16 +307,16 @@ public class Room {
         } else if (side == 'w') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 30) {
-                    tiles[0][i] = wall;
+                    tiles[0][i] = WALL;
                     if (i == coord - 2 || i == coord + 2) { //the far borders--put walls
-                        if (tiles[1][i] == nothing) {
-                            tiles[1][i] = wall;
+                        if (tiles[1][i] == NOTHING) {
+                            tiles[1][i] = WALL;
                         }
-                        if (tiles[2][i] == nothing) {
-                            tiles[2][i] = wall;
+                        if (tiles[2][i] == NOTHING) {
+                            tiles[2][i] = WALL;
                         }
-                        if (tiles[3][i] == nothing) {
-                            tiles[3][i] = wall;
+                        if (tiles[3][i] == NOTHING) {
+                            tiles[3][i] = WALL;
                         }
                     } else if ((i > 0 && i < 29) && (i == coord - 1 || i == coord + 1)) { //inside--put floor
                         tiles[1][i] = Tileset.fG[1][i];

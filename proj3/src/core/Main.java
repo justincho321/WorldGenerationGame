@@ -3,7 +3,6 @@ package core;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
-
 import static tileengine.Tileset.fG;
 
 public class Main {

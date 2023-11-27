@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Objects;
 public class Menu {
-    private static TETile avatar = Tileset.AVATAR;
+    private TETile avatar = Tileset.AVATAR;
     private TETile[][] tiles;
     private TETile nothing = Tileset.CUSTOM_NOTHING;
     private boolean keepMenu = true;

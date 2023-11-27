@@ -5,10 +5,8 @@ import tileengine.TETile;
 import tileengine.Tileset;
 
 public class Hall {
-    static TETile floor;
-
     //return whether two rooms can be connected by a horizontal OR vertical hallway
-    public static int[] boolMakeHallwaysX(World world, Room room1, Room room2) {
+    public static final int[] boolMakeHallwaysX(World world, Room room1, Room room2) {
         int[] returnArray = new int[3];
         //HORIZONTALLY
         //find smaller of the two ranges

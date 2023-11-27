@@ -1,6 +1,5 @@
 package core;
 
-import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -25,27 +24,25 @@ public class AutograderBuddy {
      * @return the 2D TETile[][] representing the state of the world
      */
     public static TETile[][] getWorldFromInput(String input) {
-        //long seed = Long.parseLong(input.substring(1, input.length() - 1));
         long seed = 0;
         boolean beforeN = true;
         String avatarName = "";
         fG = new TETile[60][30];
         Tileset.colorGradient(fG);
-        TERenderer ter = new TERenderer();
+        //TERenderer ter = new TERenderer();
         Tileset.MyComponent gradient = new Tileset.MyComponent();
         BufferedImage image = new BufferedImage(60, 30, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         gradient.paint(g);
-        ter.initialize(60, 33);
+        //ter.initialize(60, 33);
         int z = 0;
         int y = 0;
         World world = null;
         Game game = null;
         HUD hud = new HUD();
         Move move = new Move();
-
         for (int i = 0; i < input.length(); i++) {
-            if (beforeN == true) {
+            if (beforeN) {
                 if (input.charAt(i) == 'L' || input.charAt(i) == 'l') {
                     Menu menu = new Menu(60, 30);
                     menu.loadGame();
@@ -62,7 +59,6 @@ public class AutograderBuddy {
             }
         }
         for (int i = y; i < input.length(); i++) {
-
             if (input.charAt(i) == 'N' || input.charAt(i) == 'n') {
                 beforeN = false;
                 for (int j = i; j < input.length(); j++) {
@@ -74,20 +70,25 @@ public class AutograderBuddy {
                             world.setAvatarName(avatarName);
                         }
                         game = new Game();
-                        //game.runGame(world, 60, 30);
-                        ter.renderFrame(world.getTiles());
-                        hud.renderHUD(world);
+                        //ter.renderFrame(world.getTiles());
+                        //hud.renderHUD(world);
                         z = j;
                         break;
                     }
                 }
             }
         }
-        double xCurr = 0;
-        double yCurr = 0;
+        AutograderBuddy auto = new AutograderBuddy();
         boolean colon = false;
         boolean lightsOff = world.getLightsOff();
-        //after render game
+        auto.autoHelper(world, z, input, colon, game, game.lightsOff, hud, move);
+
+        return world.getTiles();
+    }
+
+    private void autoHelper(World world, int z, String input, boolean colon,
+                            Game game, boolean lightsOff, HUD hud, Move move) {
+        //TERenderer ter = new TERenderer();
         for (int i = z; i < input.length(); i++) {
             char key = input.charAt(i);
             if (colon && (key == 'Q' || key == 'q')) {
@@ -97,32 +98,27 @@ public class AutograderBuddy {
                 colon = true;
             } else if (key == 'f' || key == 'F') {
                 if (lightsOff) { //so turn on
-                    ter.renderFrame(world.getTiles());
-                    hud.renderHUD(world);
+                    //ter.renderFrame(world.getTiles());
+                    //hud.renderHUD(world);
                     lightsOff = false;
                 } else { //so turn off
                     TETile[][] lightGrid = world.getLitSurrounding();
-                    ter.renderFrame(lightGrid);
-                    //hud.renderHUD(world);
+                    //ter.renderFrame(lightGrid);
                     lightsOff = true;
                 }
             } else {
                 move.move(world, world.getAPos(), key, lightsOff);
-                //if lights are off, then change the light grid accordingly
                 if (lightsOff) {
                     TETile[][] lightGrid = world.getLitSurrounding();
-                    ter.renderFrame(lightGrid);
+                    //ter.renderFrame(lightGrid);
+                    //otherwise rerender the full world
+                    //ter.renderFrame(world.getTiles());
                     //hud.renderHUD(world);
-                } else { //otherwise rerender the full world
-                    ter.renderFrame(world.getTiles());
-                    hud.renderHUD(world);
-
                 }
             }
         }
-        return world.getTiles();
-
     }
+
 
 
     /**
