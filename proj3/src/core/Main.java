@@ -10,7 +10,7 @@ public class Main {
     private static final int HEIGHT = 30;
 
     public static void main(String[] args) {
-        //AutograderBuddy.getWorldFromInput("n1392967723524655428sddsaawws:q");
+        //AutograderBuddy.getWorldFromInput("n1392967723524655428sddsaawws");
         //AutograderBuddy.getWorldFromInput("laddw");
         //AutograderBuddy.getWorldFromInput("n1392967723524655428sddsaawwsaddw");
         //populate floorGradient array

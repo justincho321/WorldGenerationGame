@@ -1,6 +1,7 @@
 package core;
 
 import edu.princeton.cs.algs4.In;
+import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -33,12 +34,12 @@ public class AutograderBuddy {
         String avatarName = "";
         fG = new TETile[60][30];
         Tileset.colorGradient(fG);
-        //TERenderer ter = new TERenderer();
+        TERenderer ter = new TERenderer();
         Tileset.MyComponent gradient = new Tileset.MyComponent();
         BufferedImage image = new BufferedImage(60, 30, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         gradient.paint(g);
-        //ter.initialize(60, 33);
+        ter.initialize(60, 33);
         int z = 0;
         int y = 0;
         World world = null;
@@ -60,7 +61,10 @@ public class AutograderBuddy {
                 if (input.charAt(i) == 'L' || input.charAt(i) == 'l') {
                     //Menu menu = new Menu(60, 30);
                     AutograderBuddy auto = new AutograderBuddy();
-                    auto.autoLoadGame();
+                    world = auto.autoLoadGame();
+                    boolean colon = false;
+                    boolean lightsOff = world.getLightsOff();
+                    return auto.autoHelper(world, z, input, colon, game, lightsOff, hud, move);
                 } else if (input.charAt(i) == 'Q' || input.charAt(i) == 'q') {
                     return defaultTiles;
                 } else if (input.charAt(i) == 'A' || input.charAt(i) == 'a') {
@@ -85,8 +89,8 @@ public class AutograderBuddy {
                             world.setAvatarName(avatarName);
                         }
                         game = new Game();
-                        //ter.renderFrame(world.getTiles());
-                        //hud.renderHUD(world);
+                        ter.renderFrame(world.getTiles());
+                        hud.renderHUD(world);
                         z = j;
                         break;
                     }
@@ -105,7 +109,7 @@ public class AutograderBuddy {
 
     private TETile[][] autoHelper(World world, int z, String input, boolean colon,
                             Game game, boolean lightsOff, HUD hud, Move move) {
-        //TERenderer ter = new TERenderer();
+        TERenderer ter = new TERenderer();
         for (int i = z; i < input.length(); i++) {
             char key = input.charAt(i);
             if (colon && (key == 'Q' || key == 'q')) {
@@ -149,29 +153,30 @@ public class AutograderBuddy {
                 colon = true;
             } else if (key == 'f' || key == 'F') {
                 if (lightsOff) { //so turn on
-                    //ter.renderFrame(world.getTiles());
-                    //hud.renderHUD(world);
+                    ter.renderFrame(world.getTiles());
+                    hud.renderHUD(world);
                     lightsOff = false;
                 } else { //so turn off
                     TETile[][] lightGrid = world.getLitSurrounding();
-                    //ter.renderFrame(lightGrid);
+                    ter.renderFrame(lightGrid);
                     lightsOff = true;
                 }
             } else {
                 move.move(world, world.getAPos(), key, lightsOff);
                 if (lightsOff) {
                     TETile[][] lightGrid = world.getLitSurrounding();
-                    //ter.renderFrame(lightGrid);
+                    ter.renderFrame(lightGrid);
                     //otherwise rerender the full world
-                    //ter.renderFrame(world.getTiles());
-                    //hud.renderHUD(world);
+                } else {
+                    ter.renderFrame(world.getTiles());
+                    hud.renderHUD(world);
                 }
             }
         }
         return world.getTiles();
     }
 
-    public TETile[][] autoLoadGame() {
+    public World autoLoadGame() {
 
         File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
         if (file.length() > 0) {
@@ -181,7 +186,7 @@ public class AutograderBuddy {
             String strAx = positionStr.split(",")[0];
             String strAy = positionStr.split(",")[1];
             String strLightsOff = in.readLine();
-            String aName = in.readLine();
+            //String aName = in.readLine();
 
             long seed1 = Long.parseLong(strSeed);
             int aPosX = Integer.parseInt(strAx);
@@ -193,10 +198,14 @@ public class AutograderBuddy {
             TETile avatar = new TETile('@', Color.white,
                     Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
             world.getTiles()[aPosX][aPosY] = avatar;
-            world.setAvatarName(aName);
+            //world.setAvatarName(aName);
             world.setLights(lightsOff); //must be done after making world
             world.setAPos(new int[]{aPosX, aPosY});
-            return world.getTiles();
+
+            TERenderer ter = new TERenderer();
+            ter.renderFrame(world.getTiles());
+            //hud.renderHUD(world);
+            return world;
             //game.runGame(world, 60, 30);
 
         } else {
@@ -206,7 +215,7 @@ public class AutograderBuddy {
                     defaultTiles[x][p] = Tileset.CUSTOM_NOTHING;
                 }
             }
-            return defaultTiles;
+            return null;
         }
 
     }
