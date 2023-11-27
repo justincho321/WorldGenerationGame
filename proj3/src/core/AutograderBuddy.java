@@ -45,6 +45,12 @@ public class AutograderBuddy {
         Game game = null;
         HUD hud = new HUD();
         Move move = new Move();
+        TETile[][] defaultTiles = new TETile[60][30];
+        for (int x = 0; x < 60; x++) {
+            for (int p = 0; p < 30; p++) {
+                defaultTiles[x][p] = Tileset.CUSTOM_NOTHING;
+            }
+        }
         for (int i = 0; i < input.length(); i++) {
             if (beforeN) {
                 if (input.charAt(i) == 'L' || input.charAt(i) == 'l') {
@@ -52,7 +58,7 @@ public class AutograderBuddy {
                     AutograderBuddy auto = new AutograderBuddy();
                     auto.autoLoadGame();
                 } else if (input.charAt(i) == 'Q' || input.charAt(i) == 'q') {
-                    return new TETile[60][30];
+                    return defaultTiles;
                 } else if (input.charAt(i) == 'A' || input.charAt(i) == 'a') {
                     for (int j = i; j < input.length(); j++) {
                         if (input.charAt(j) == '+') {
@@ -84,7 +90,7 @@ public class AutograderBuddy {
             }
         }
         if (world == null) {
-            return new TETile[60][30];
+            return defaultTiles;
         } else {
             AutograderBuddy auto = new AutograderBuddy();
             boolean colon = false;

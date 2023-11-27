@@ -251,8 +251,8 @@ public class Room {
                 }
             }
             Room room = new Room(world.getRoomCounter(), coord, 27, 3, 2);
-            world.getRoomMap().put(world.getRoomCounter(), room);
-            world.incRoomCounter();
+            //world.getRoomMap().put(world.getRoomCounter(), room);
+            //world.incRoomCounter();
         } else if (side == 's') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 60) {
@@ -274,8 +274,8 @@ public class Room {
                 }
             }
             Room room = new Room(world.getRoomCounter(), coord, 0, 3, 2);
-            world.getRoomMap().put(world.getRoomCounter(), room);
-            world.incRoomCounter();
+            //world.getRoomMap().put(world.getRoomCounter(), room);
+            //world.incRoomCounter();
         }
     }
 
@@ -302,8 +302,8 @@ public class Room {
                 }
             }
             Room room = new Room(world.getRoomCounter(), 57, coord, 2, 3);
-            world.getRoomMap().put(world.getRoomCounter(), room);
-            world.incRoomCounter();
+            //world.getRoomMap().put(world.getRoomCounter(), room);
+            //world.incRoomCounter();
         } else if (side == 'w') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 30) {
@@ -325,8 +325,8 @@ public class Room {
                 }
             }
             Room room = new Room(world.getRoomCounter(), 0, coord, 2, 3);
-            world.getRoomMap().put(world.getRoomCounter(), room);
-            world.incRoomCounter();
+            //world.getRoomMap().put(world.getRoomCounter(), room);
+            //world.incRoomCounter();
         }
     }
 }
