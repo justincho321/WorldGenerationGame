@@ -1,7 +1,6 @@
 package core;
 
 import edu.princeton.cs.algs4.In;
-import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -34,12 +33,12 @@ public class AutograderBuddy {
         String avatarName = "";
         fG = new TETile[60][30];
         Tileset.colorGradient(fG);
-        TERenderer ter = new TERenderer();
+        //TERenderer ter = new TERenderer();
         Tileset.MyComponent gradient = new Tileset.MyComponent();
         BufferedImage image = new BufferedImage(60, 30, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         gradient.paint(g);
-        ter.initialize(60, 33);
+        //ter.initialize(60, 33);
         int z = 0;
         int y = 0;
         World world = null;
@@ -89,8 +88,8 @@ public class AutograderBuddy {
                             world.setAvatarName(avatarName);
                         }
                         game = new Game();
-                        ter.renderFrame(world.getTiles());
-                        hud.renderHUD(world);
+                        //ter.renderFrame(world.getTiles());
+                        //hud.renderHUD(world);
                         z = j;
                         break;
                     }
@@ -109,7 +108,7 @@ public class AutograderBuddy {
 
     private TETile[][] autoHelper(World world, int z, String input, boolean colon,
                             Game game, boolean lightsOff, HUD hud, Move move) {
-        TERenderer ter = new TERenderer();
+        //TERenderer ter = new TERenderer();
         for (int i = z; i < input.length(); i++) {
             char key = input.charAt(i);
             if (colon && (key == 'Q' || key == 'q')) {
@@ -153,23 +152,20 @@ public class AutograderBuddy {
                 colon = true;
             } else if (key == 'f' || key == 'F') {
                 if (lightsOff) { //so turn on
-                    ter.renderFrame(world.getTiles());
-                    hud.renderHUD(world);
+                    //ter.renderFrame(world.getTiles());
+                    //hud.renderHUD(world);
                     lightsOff = false;
                 } else { //so turn off
                     TETile[][] lightGrid = world.getLitSurrounding();
-                    ter.renderFrame(lightGrid);
+                    //ter.renderFrame(lightGrid);
                     lightsOff = true;
                 }
             } else {
                 move.move(world, world.getAPos(), key, lightsOff);
                 if (lightsOff) {
                     TETile[][] lightGrid = world.getLitSurrounding();
-                    ter.renderFrame(lightGrid);
+                    //ter.renderFrame(lightGrid);
                     //otherwise rerender the full world
-                } else {
-                    ter.renderFrame(world.getTiles());
-                    hud.renderHUD(world);
                 }
             }
         }
@@ -202,8 +198,8 @@ public class AutograderBuddy {
             world.setLights(lightsOff); //must be done after making world
             world.setAPos(new int[]{aPosX, aPosY});
 
-            TERenderer ter = new TERenderer();
-            ter.renderFrame(world.getTiles());
+            //TERenderer ter = new TERenderer();
+            //ter.renderFrame(world.getTiles());
             //hud.renderHUD(world);
             return world;
             //game.runGame(world, 60, 30);
