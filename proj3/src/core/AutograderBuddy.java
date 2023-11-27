@@ -6,7 +6,6 @@ import tileengine.Tileset;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
@@ -105,17 +104,20 @@ public class AutograderBuddy {
         for (int i = z; i < input.length(); i++) {
             char key = input.charAt(i);
             if (colon && (key == 'Q' || key == 'q')) {
+                /*
                 File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
                 if (file.exists()) {
                     file.delete();
                 }
+
+                 */
                 long lastSeed = world.getSeed();
                 String aName = world.getAvatarName();
 
                 //save avatar position
                 String aPos = world.getAPos()[0] + "," + world.getAPos()[1];
                 try {
-                    FileWriter myWriter = new FileWriter(file);
+                    FileWriter myWriter = new FileWriter("saveGame.txt");
                     myWriter.write(lastSeed + "\n"); //first line seed
                     myWriter.write(aPos + "\n"); //second line avatar position
                     myWriter.write(lightsOff + "\n"); //third line lights on/off
@@ -163,33 +165,32 @@ public class AutograderBuddy {
     }
 
     public TETile[][] autoLoadGame() {
-        File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
-        if (file.exists()) {
-            In in = new In(file);
-            String strSeed = in.readLine();
-            String positionStr = in.readLine();
-            String strAx = positionStr.split(",")[0];
-            String strAy = positionStr.split(",")[1];
-            String strLightsOff = in.readLine();
-            String aName = in.readLine();
 
-            long seed1 = Long.parseLong(strSeed);
-            int aPosX = Integer.parseInt(strAx);
-            int aPosY = Integer.parseInt(strAy);
-            boolean lightsOff = Boolean.parseBoolean(strLightsOff);
+        In in = new In("saveGame.txt");
+        String strSeed = in.readLine();
+        String positionStr = in.readLine();
+        String strAx = positionStr.split(",")[0];
+        String strAy = positionStr.split(",")[1];
+        String strLightsOff = in.readLine();
+        String aName = in.readLine();
 
-            World world = new World(seed1);
-            Game game = new Game();
-            TETile avatar = new TETile('@', Color.white,
-                    Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
-            world.getTiles()[aPosX][aPosY] = avatar;
-            world.setAvatarName(aName);
-            world.setLights(lightsOff); //must be done after making world
-            world.setAPos(new int[] {aPosX, aPosY});
-            return world.getTiles();
-            //game.runGame(world, 60, 30);
+        long seed1 = Long.parseLong(strSeed);
+        int aPosX = Integer.parseInt(strAx);
+        int aPosY = Integer.parseInt(strAy);
+        boolean lightsOff = Boolean.parseBoolean(strLightsOff);
 
-        } else {
+        World world = new World(seed1);
+        Game game = new Game();
+        TETile avatar = new TETile('@', Color.white,
+                Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
+        world.getTiles()[aPosX][aPosY] = avatar;
+        world.setAvatarName(aName);
+        world.setLights(lightsOff); //must be done after making world
+        world.setAPos(new int[] {aPosX, aPosY});
+        return world.getTiles();
+        //game.runGame(world, 60, 30);
+        /*
+        else {
             TETile[][] defaultTiles = new TETile[60][30];
             for (int x = 0; x < 60; x++) {
                 for (int p = 0; p < 30; p++) {
@@ -198,6 +199,7 @@ public class AutograderBuddy {
             }
             return defaultTiles;
         }
+         */
     }
 
     /**
