@@ -53,6 +53,10 @@ public class AutograderBuddy {
         }
         for (int i = 0; i < input.length(); i++) {
             if (beforeN) {
+                if (input.charAt(i) == 'N' || input.charAt(i) == 'n') {
+                    beforeN = true;
+                    break;
+                }
                 if (input.charAt(i) == 'L' || input.charAt(i) == 'l') {
                     //Menu menu = new Menu(60, 30);
                     AutograderBuddy auto = new AutograderBuddy();
