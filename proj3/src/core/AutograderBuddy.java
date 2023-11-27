@@ -83,10 +83,14 @@ public class AutograderBuddy {
                 }
             }
         }
-        AutograderBuddy auto = new AutograderBuddy();
-        boolean colon = false;
-        boolean lightsOff = world.getLightsOff();
-        return auto.autoHelper(world, z, input, colon, game, lightsOff, hud, move);
+        if (world == null) {
+            return new TETile[60][30];
+        } else {
+            AutograderBuddy auto = new AutograderBuddy();
+            boolean colon = false;
+            boolean lightsOff = world.getLightsOff();
+            return auto.autoHelper(world, z, input, colon, game, lightsOff, hud, move);
+        }
     }
 
     private TETile[][] autoHelper(World world, int z, String input, boolean colon,

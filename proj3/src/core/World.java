@@ -81,15 +81,15 @@ public class World {
         int counter = 0;
         leftmost = 0;
         while (wqu.count() != 1) {
+            if (counter > 50) {
+                break;
+            }
             for (int i = 0; i < roomNumbers; i++) {
                 if (roomMap.get(roomNumbers) != null
                         && roomMap.get(roomNumbers).getStartX() < roomMap.get(leftmost).getStartX()) {
                     leftmost = roomNumbers;
                 }
                 for (int j = 0; j < roomNumbers; j++) {
-                    if (counter > 50) {
-                        break;
-                    }
                     if (!wqu.connected(i, j)) {
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(j));
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(i));
