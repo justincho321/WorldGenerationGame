@@ -2,7 +2,6 @@ package core;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
-import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 import java.awt.Font;
@@ -10,16 +9,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Objects;
-
-import static java.lang.Character.getNumericValue;
-
 public class Menu {
-    public static TETile avatar = Tileset.AVATAR;
+    private static TETile avatar = Tileset.AVATAR;
     private TETile[][] tiles;
     private TETile nothing = Tileset.CUSTOM_NOTHING;
     private boolean keepMenu = true;
     private boolean keepAvatarScreen = true;
-    private long seed;
+    private long _seed;
     private String avatarName;
     public Menu(int width, int height) {
         tiles = new TETile[width][height];
@@ -49,8 +45,8 @@ public class Menu {
         StdDraw.text(30, 10, newGame);
         String loadGame = "Load Game (L)";
         StdDraw.text(30, 8, loadGame);
-        String avatarName = "Set Avatar Name (A)";
-        StdDraw.text(30, 6, avatarName);
+        String aName = "Set Avatar Name (A)";
+        StdDraw.text(30, 6, aName);
         String quitGame = "Quit (Q)";
         StdDraw.text(30, 4, quitGame);
 
@@ -103,22 +99,22 @@ public class Menu {
                     BufferedImage image = new BufferedImage(60, 30, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g = image.createGraphics();
                     gradient.paint(g);
-                    if (key == 'N') {
-                        seed = setSeed();
+                    if (key == 'N' || key == 'n') {
+                        _seed = setSeed();
 
                         //make/run world/game and ADD first avatar
-                        World world = new World(seed);
+                        World world = new World(_seed);
                         world.addFirstAvatar();
                         if (!Objects.equals(avatarName, "")) {
                             world.setAvatarName(avatarName);
                         }
                         Game game = new Game();
                         game.runGame(world, 60, 30);
-                    } else if (key == 'L') {
+                    } else if (key == 'L' || key == 'l') {
                         loadGame();
-                    } else if (key == 'A') {
-                        String avatarName = setAvatarName();
-                    } else if (key == 'Q') {
+                    } else if (key == 'A' || key == 'a') {
+                        avatarName = setAvatarName();
+                    } else if (key == 'Q' || key == 'q') {
                         //double check if this is the correct functionality
                         System.exit(0);
                     }
@@ -133,18 +129,18 @@ public class Menu {
         String title = "Please Enter A Seed (Finish by pressing 'S'):";
         StdDraw.text(30, 20, title);
         StdDraw.show();
-        long seed = 0;
+        long seed1 = 0;
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
                 char key = (StdDraw.nextKeyTyped());
-                if (key == 'S') {
+                if (key == 'S' || key == 's') {
                     keepMenu = false;
-                    return seed;
+                    return seed1;
                 } else {
                     StdDraw.clear(Color.BLACK);
                     int numKey = Character.getNumericValue(key);
-                    seed = 10 * seed + numKey;
-                    String seedSoFar = String.valueOf(seed);
+                    seed1 = 10 * seed1 + numKey;
+                    String seedSoFar = String.valueOf(seed1);
                     StdDraw.text(30, 20, title);
                     StdDraw.text(30, 15, seedSoFar);
                     StdDraw.show();
@@ -157,14 +153,14 @@ public class Menu {
     //change the avatar name!
     public String setAvatarName() {
         StdDraw.clear(Color.BLACK);
-        String title = "Please Enter A Name (Finish by Pressing 'S'):";
+        String title = "Please Enter A Name (Finish by Pressing '+'):";
         StdDraw.text(30, 20, title);
         StdDraw.show();
         StringBuilder name = new StringBuilder();
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
                 char key = (StdDraw.nextKeyTyped());
-                if (key == 'S') {
+                if (key == '+') {
                     StdDraw.clear(Color.BLACK);
                     keepAvatarScreen = false;
                     avatarName = name.toString();
@@ -193,14 +189,15 @@ public class Menu {
             String strLightsOff = in.readLine();
             String aName = in.readLine();
 
-            long seed = Long.parseLong(strSeed);
+            long seed1 = Long.parseLong(strSeed);
             int aPosX = Integer.parseInt(strAx);
             int aPosY = Integer.parseInt(strAy);
             boolean lightsOff = Boolean.parseBoolean(strLightsOff);
 
-            World world = new World(seed);
+            World world = new World(seed1);
             Game game = new Game();
-            avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
+            avatar = new TETile('@', Color.white,
+                    Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
             world.getTiles()[aPosX][aPosY] = avatar;
             world.setAvatarName(aName);
             world.setLights(lightsOff); //must be done after making world

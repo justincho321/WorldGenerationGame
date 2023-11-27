@@ -343,37 +343,31 @@ public class Hall {
 
         //TOP RIGHT QUADRANT
         if (room.startY > 15 && room.startX > 30) {
-//            connectRoomTopRightHelper(world, room);
             boolean temp = connectRoomHelperX(world, room, 'l', 'd');
-            if (!temp) {
-                connectRoomHelperY(world, room, 'd', 'l');
-            }
+            connectRoomHelperY(world, room, 'd', 'l');
+
         }
         //BOTTOM RIGHT QUADRANT
         if (room.startY < 16 && room.startX > 30) {
-//            connectRoomBottomRightHelper(world, room);
             boolean temp = connectRoomHelperX(world, room, 'l', 'u');
-            if (!temp) {
-                connectRoomHelperY(world, room, 'u', 'l');
-            }
+
+            connectRoomHelperY(world, room, 'u', 'l');
+
         }
 
         //TOP LEFT QUADRANT
         if (room.startY > 15 && room.startX < 31) {
-//            connectRoomTopLeftHelper(world, room);
             boolean temp = connectRoomHelperX(world, room, 'r', 'd');
-            if (!temp) {
-                connectRoomHelperY(world, room, 'd', 'r');
-            }
+
+            connectRoomHelperY(world, room, 'd', 'r');
+
         }
 
         //BOTTOM LEFT QUADRANT
         if (room.startY < 16 && room.startX < 31) {
-//            connectRoomBottomLeftHelper(world, room);
             boolean temp = connectRoomHelperX(world, room, 'r', 'u');
-            if (!temp) {
-                connectRoomHelperY(world, room, 'u', 'r');
-            }
+
+            connectRoomHelperY(world, room, 'u', 'r');
         }
     }
 
@@ -411,7 +405,7 @@ public class Hall {
                         }
                         //traverse up or down until you reach a room
                         while (Room.findRoomNumber(world, i, room.startY + (j * multiplier)) == -1) {
-                            j ++;
+                            j++;
                             if (room.startY + (j * multiplier) < 0 || room.startY + (j * multiplier) == 30) {
                                 return false;
                             }
@@ -421,6 +415,7 @@ public class Hall {
                         return true;
                     }
                 } else {
+                    finalRoomNum = Room.findRoomNumber(world, i, room.startY + 1);
                     wqu.union(finalRoomNum, room.num);
                     return true;
                 }
@@ -482,10 +477,11 @@ public class Hall {
                         finalRoomNum = Room.findRoomNumber(world, room.startX + (j * multiplier), i);
                         wqu.union(finalRoomNum, room.num);
                         return true;
-                    } else {
-                        wqu.union(finalRoomNum, room.num);
-                        return true;
                     }
+                } else {
+                    finalRoomNum = Room.findRoomNumber(world, room.startX + 1, i);
+                    wqu.union(finalRoomNum, room.num);
+                    return true;
                 }
             } else {
                 tiles[room.startX + 1][i] = Tileset.fG[room.startX + 1][i];
@@ -507,10 +503,6 @@ public class Hall {
         TETile[][] tiles = world.getTiles();
         WeightedQuickUnionUF wqu = world.getWQU();
         int finalRoomNum = 0;
-        //build left
-//        if (Room.checkStructure('w', room.startY + 2)) {
-//
-//        }
         for (int i = room.startX; i >= 0; i--) {
             if (tiles[i][room.startY + 2] != Tileset.fG[i][room.startY + 2]) {
                 tiles[i][room.startY + 2] = wall;

@@ -4,11 +4,6 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
-import javax.swing.*;
-import java.awt.Color;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 import static tileengine.Tileset.fG;
 
 public class Main {
@@ -16,7 +11,9 @@ public class Main {
     private static final int HEIGHT = 30;
 
     public static void main(String[] args) {
+        //AutograderBuddy.getWorldFromInput("Ajustine+n102S");
         //populate floorGradient array
+
         fG = new TETile[60][30];
         Tileset.colorGradient(fG);
 

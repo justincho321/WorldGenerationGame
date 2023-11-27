@@ -19,6 +19,8 @@ public class Game {
     private long prevActionTimestamp;
     private long prevFrameTimestamp;
     boolean lightsOff;
+    Move move;
+    HUD hud;
 
     //Constructor
     public Game() {
@@ -31,10 +33,10 @@ public class Game {
     }
 
     //handles when to render and update the game board
-    public void runGame(World world, int WIDTH, int HEIGHT) {
+    public void runGame(World world, int width, int height) {
 
-        HUD hud = new HUD();
-        Move move = new Move();
+        hud = new HUD();
+        move = new Move();
         TERenderer ter = new TERenderer();
         double xCurr = 0;
         double yCurr = 0;
@@ -44,7 +46,7 @@ public class Game {
         resetActionTimer();
         resetFrameTimer();
 
-        ter.initialize(WIDTH, HEIGHT + 3);
+        ter.initialize(width, height + 3);
         if (lightsOff) {
             TETile[][] lightGrid = world.getLitSurrounding();
             ter.renderFrame(lightGrid);
@@ -60,12 +62,12 @@ public class Game {
                 //only rerender frame if press key or something else changes
                 if (StdDraw.hasNextKeyTyped()) {
                     char key = StdDraw.nextKeyTyped();
-                    if (colon && key == 'Q') {
+                    if (colon && (key == 'Q' || key == 'q')) {
                         saveAndQuit(world);
                         colon = false;
                     } else if (key == ':') {
                         colon = true;
-                    } else if (key == 'f') {
+                    } else if (key == 'f' || key == 'F') {
                         if (lightsOff) { //so turn on
                             ter.renderFrame(world.getTiles());
                             hud.renderHUD(world);
@@ -109,6 +111,9 @@ public class Game {
         }
     }
 
+    public Move getMove() {
+        return move;
+    }
     public void saveAndQuit(World world) {
         File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
         if (file.exists()) {

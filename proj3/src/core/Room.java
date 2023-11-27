@@ -11,9 +11,9 @@ public class Room {
     int width;
     int height;
     static TETile floor;
-    public static TETile wall = Tileset.CUSTOM_WALL;
-    public static TETile nothing = Tileset.CUSTOM_NOTHING;
-    public static TETile avatar = Tileset.AVATAR;
+    private static TETile wall = Tileset.CUSTOM_WALL;
+    private static TETile nothing = Tileset.CUSTOM_NOTHING;
+    private static TETile avatar = Tileset.AVATAR;
 
     //CONSTRUCTOR
     public Room(int num, int startX, int startY, int roomWidth, int roomHeight) {
@@ -81,20 +81,17 @@ public class Room {
         int oppWall = roomStartWidth - roomWidth;
         int multiplier1 = -1;
         int multiplier2 = -1;
-        //swap signs of ceiling if necessary
-        if (ceiling < 0) {
+        if (ceiling < 0) {  //swap signs of ceiling if necessary
             ceiling = roomStartHeight + roomHeight;
             multiplier2 = 1;
             bottomLeftY = roomStartHeight;
         }
-        //swap signs of opposite wall if necessary
-        if (oppWall < 0) {
+        if (oppWall < 0) { //swap signs of opposite wall if necessary
             oppWall = roomStartWidth + roomWidth;
             multiplier1 = 1;
             bottomLeftX = roomStartWidth;
         }
-        //makes the horizontal floor and ceiling
-        for (int j = 0; j <= roomWidth; j++) {
+        for (int j = 0; j <= roomWidth; j++) { //makes the horizontal floor and ceiling
             //if we iterate past the boundary width! Break the loop
             int firstX = roomStartWidth + (j * multiplier1);
             int firstY = roomStartHeight;
@@ -146,7 +143,6 @@ public class Room {
             }
         }
         Room room = new Room(world.getRoomCounter(), bottomLeftX, bottomLeftY, roomWidth, roomHeight);
-        //int rc = world.getRoomCounter();
         world.getRoomMap().put(world.getRoomCounter(), room);
         world.incRoomCounter();
         room.setFloor(world, room);
@@ -197,7 +193,7 @@ public class Room {
                 TETile temp22 = world.getTiles()[x - 1][y];
                 TETile temp23 = world.getTiles()[x + 1][y];
                 if (temp21 == world.getWall() && temp22 == Tileset.fG[x - 1][y] && temp23 != world.getNothing()) {
-                    roomNum = Room.findRoomNumber(world,x - 1, y);
+                    roomNum = Room.findRoomNumber(world, x - 1, y);
                     returnArray[0] = 1;
                     returnArray[1] = roomNum;
                     return returnArray;
@@ -252,12 +248,15 @@ public class Room {
                         if (tiles[i][26] == nothing) {
                             tiles[i][26] = wall;
                         }
-                    } else if (i == coord - 1 || i == coord + 1) {
+                    } else if ((i > 0 && i < 59) && (i == coord - 1 || i == coord + 1)) {
                         tiles[i][28] = Tileset.fG[i][28];
                         tiles[i][27] = Tileset.fG[i][27];
                     }
                 }
             }
+            Room room = new Room(world.getRoomCounter(), coord, 27, 3, 2);
+            world.getRoomMap().put(world.getRoomCounter(), room);
+            world.incRoomCounter();
         } else if (side == 's') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 60) {
@@ -272,12 +271,15 @@ public class Room {
                         if (tiles[i][2] == nothing) {
                             tiles[i][2] = wall;
                         }
-                    } else if (i == coord - 1 || i == coord + 1) {
+                    } else if ((i > 0 && i < 59) && (i == coord - 1 || i == coord + 1)) {
                         tiles[i][1] = Tileset.fG[i][0];
                         tiles[i][2] = Tileset.fG[i][1];
                     }
                 }
             }
+            Room room = new Room(world.getRoomCounter(), coord, 0, 3, 2);
+            world.getRoomMap().put(world.getRoomCounter(), room);
+            world.incRoomCounter();
         }
     }
 
@@ -297,12 +299,15 @@ public class Room {
                         if (tiles[56][i] == nothing) {
                             tiles[56][i] = wall;
                         }
-                    } else if (i == coord - 1 || i == coord + 1) { //inside--put floor
+                    } else if ((i > 0 && i < 29) && (i == coord - 1 || i == coord + 1)) { //inside--put floor
                         tiles[58][i] = Tileset.fG[58][i];
                         tiles[57][i] = Tileset.fG[57][i];
                     }
                 }
             }
+            Room room = new Room(world.getRoomCounter(), 57, coord, 2, 3);
+            world.getRoomMap().put(world.getRoomCounter(), room);
+            world.incRoomCounter();
         } else if (side == 'w') {
             for (int i = coord - 2; i < coord + 3; i++) {
                 if (i >= 0 && i < 30) {
@@ -317,12 +322,15 @@ public class Room {
                         if (tiles[3][i] == nothing) {
                             tiles[3][i] = wall;
                         }
-                    } else if (i == coord - 1 || i == coord + 1) { //inside--put floor
+                    } else if ((i > 0 && i < 29) && (i == coord - 1 || i == coord + 1)) { //inside--put floor
                         tiles[1][i] = Tileset.fG[1][i];
                         tiles[2][i] = Tileset.fG[2][i];
                     }
                 }
             }
+            Room room = new Room(world.getRoomCounter(), 0, coord, 2, 3);
+            world.getRoomMap().put(world.getRoomCounter(), room);
+            world.incRoomCounter();
         }
     }
 }

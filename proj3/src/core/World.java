@@ -27,10 +27,10 @@ public class World {
     boolean lightsOff;
 
     //setting custom tiles
-    public static TETile wall = Tileset.CUSTOM_WALL;
-    public static TETile floor = Tileset.CUSTOM_FLOOR;
-    public static TETile nothing = Tileset.CUSTOM_NOTHING;
-    public static TETile avatar = Tileset.AVATAR;
+    static TETile wall = Tileset.CUSTOM_WALL;
+    static TETile floor = Tileset.CUSTOM_FLOOR;
+    static TETile nothing = Tileset.CUSTOM_NOTHING;
+    static TETile avatar = Tileset.AVATAR;
 
     //private Tileset ts;
 
@@ -81,7 +81,8 @@ public class World {
         leftmost = 0;
         while (wqu.count() != 1) {
             for (int i = 0; i < roomNumbers; i++) {
-                if (roomMap.get(roomNumbers) != null && roomMap.get(roomNumbers).getStartX() < roomMap.get(leftmost).getStartX()) {
+                if (roomMap.get(roomNumbers) != null
+                        && roomMap.get(roomNumbers).getStartX() < roomMap.get(leftmost).getStartX()) {
                     leftmost = roomNumbers;
                 }
                 for (int j = 0; j < roomNumbers; j++) {
@@ -98,7 +99,8 @@ public class World {
         //add avatar to leftmost room
         aPos[0] = roomMap.get(this.getLeftmost()).getStartX() + 1;
         aPos[1] = roomMap.get(this.getLeftmost()).getStartY() + 1;
-        avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
+        avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(),
+                aPos[0], aPos[1]), "you");
         tiles[aPos[0]][aPos[1]] = avatar;
     }
     //MISCELLANEOUS GETTERS AND SETTERS
@@ -126,8 +128,8 @@ public class World {
         return lightsOff;
     }
 
-    public void setLights(boolean lightsOff) {
-        this.lightsOff = lightsOff;
+    public void setLights(boolean lightsOff1) {
+        this.lightsOff = lightsOff1;
     }
 
     public int[] getAPos() {

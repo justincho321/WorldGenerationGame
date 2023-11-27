@@ -1,6 +1,5 @@
 package core;
 
-import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -24,7 +23,9 @@ public class Move {
                 aPos[1] = y + 1;
                 world.setAPos(aPos);
                 //change new position to avatar tile
-                avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
+                avatar = new TETile('@', Color.white,
+                        Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(),
+                                aPos[0], aPos[1]), "you");
                 tiles[x][y + 1] = avatar;
                 //change original position back to floor
                 tiles[x][y] = floors[x][y];
@@ -34,7 +35,9 @@ public class Move {
             if (x >= 0 && tiles[x - 1][y] != wall) {
                 aPos[0] = x - 1;
                 world.setAPos(aPos);
-                avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
+                avatar = new TETile('@', Color.white,
+                        Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(),
+                                aPos[0], aPos[1]), "you");
                 tiles[x - 1][y] = avatar;
                 tiles[x][y] = floors[x][y];
 
@@ -43,7 +46,9 @@ public class Move {
             if (y >= 0 && tiles[x][y - 1] != wall) {
                 aPos[1] = y - 1;
                 world.setAPos(aPos);
-                avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
+                avatar = new TETile('@', Color.white,
+                        Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(),
+                                aPos[0], aPos[1]), "you");
                 tiles[x][y - 1] = avatar;
                 tiles[x][y] = floors[x][y];
 
@@ -53,7 +58,9 @@ public class Move {
             if (x < 60 && tiles[x + 1][y] != wall) {
                 aPos[0] = x + 1;
                 world.setAPos(aPos);
-                avatar = new TETile('@', Color.white, Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPos[0], aPos[1]), "you");
+                avatar = new TETile('@', Color.white,
+                        Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(),
+                                aPos[0], aPos[1]), "you");
                 tiles[x + 1][y] = avatar;
                 tiles[x][y] = floors[x][y];
 

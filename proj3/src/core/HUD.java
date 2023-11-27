@@ -5,7 +5,6 @@ import tileengine.TETile;
 import tileengine.Tileset;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class HUD {
 
@@ -23,14 +22,14 @@ public class HUD {
         //display the tile the cursor is hovering over in top left corner
         String pos = "";
         TETile[][] tiles = world.getTiles();
-        int HUDval = HUDval(tiles);
-        if (HUDval == 0) {
+        int hudVal = hudVal(tiles);
+        if (hudVal == 0) {
             pos = "Nothing";
-        } else if (HUDval == 1) {
+        } else if (hudVal == 1) {
             pos = "Wall";
-        } else if (HUDval == 2) {
+        } else if (hudVal == 2) {
             pos = "You";
-        } else if (HUDval == 3) {
+        } else if (hudVal == 3) {
             pos = "Floor";
         }
 
@@ -49,7 +48,7 @@ public class HUD {
         StdDraw.show();
     }
 
-    public int HUDval(TETile[][] tiles) {
+    public int hudVal(TETile[][] tiles) {
         double dX = StdDraw.mouseX();
         //int x = (int) Math.round(dX);
         int x = ((Double) dX).intValue();
