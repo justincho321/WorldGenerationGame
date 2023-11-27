@@ -1,5 +1,6 @@
 package core;
 
+import edu.princeton.cs.algs4.In;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -47,8 +48,9 @@ public class AutograderBuddy {
         for (int i = 0; i < input.length(); i++) {
             if (beforeN) {
                 if (input.charAt(i) == 'L' || input.charAt(i) == 'l') {
-                    Menu menu = new Menu(60, 30);
-                    menu.loadGame();
+                    //Menu menu = new Menu(60, 30);
+                    AutograderBuddy auto = new AutograderBuddy();
+                    auto.autoLoadGame();
                 } else if (input.charAt(i) == 'Q' || input.charAt(i) == 'q') {
                     return new TETile[60][30];
                 } else if (input.charAt(i) == 'A' || input.charAt(i) == 'a') {
@@ -144,7 +146,37 @@ public class AutograderBuddy {
         return world.getTiles();
     }
 
+    public TETile[][] autoLoadGame() {
+        File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\src\\gamelog\\savedGame.txt");
+        if (file.exists()) {
+            In in = new In(file);
+            String strSeed = in.readLine();
+            String positionStr = in.readLine();
+            String strAx = positionStr.split(",")[0];
+            String strAy = positionStr.split(",")[1];
+            String strLightsOff = in.readLine();
+            String aName = in.readLine();
 
+            long seed1 = Long.parseLong(strSeed);
+            int aPosX = Integer.parseInt(strAx);
+            int aPosY = Integer.parseInt(strAy);
+            boolean lightsOff = Boolean.parseBoolean(strLightsOff);
+
+            World world = new World(seed1);
+            Game game = new Game();
+            TETile avatar = new TETile('@', Color.white,
+                    Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
+            world.getTiles()[aPosX][aPosY] = avatar;
+            world.setAvatarName(aName);
+            world.setLights(lightsOff); //must be done after making world
+            world.setAPos(new int[] {aPosX, aPosY});
+            return world.getTiles();
+            //game.runGame(world, 60, 30);
+
+        } else {
+            return new TETile[60][30];
+        }
+    }
 
     /**
      * Used to tell the autograder which tiles are the floor/ground (including

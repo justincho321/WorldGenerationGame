@@ -87,14 +87,14 @@ public class World {
                     leftmost = roomNumbers;
                 }
                 for (int j = 0; j < roomNumbers; j++) {
+                    if (counter > 50) {
+                        break;
+                    }
                     if (!wqu.connected(i, j)) {
-                        if (counter > 50) {
-                            break;
-                        }
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(j));
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(i));
-                        counter++;
                     }
+                    counter++;
                 }
             }
         }
