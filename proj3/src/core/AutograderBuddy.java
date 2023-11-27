@@ -190,7 +190,13 @@ public class AutograderBuddy {
             //game.runGame(world, 60, 30);
 
         } else {
-            return new TETile[60][30];
+            TETile[][] defaultTiles = new TETile[60][30];
+            for (int x = 0; x < 60; x++) {
+                for (int p = 0; p < 30; p++) {
+                    defaultTiles[x][p] = Tileset.CUSTOM_NOTHING;
+                }
+            }
+            return defaultTiles;
         }
     }
 
