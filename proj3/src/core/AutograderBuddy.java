@@ -50,7 +50,7 @@ public class AutograderBuddy {
                     Menu menu = new Menu(60, 30);
                     menu.loadGame();
                 } else if (input.charAt(i) == 'Q' || input.charAt(i) == 'q') {
-                    return world.getTiles();
+                    return new TETile[60][30];
                 } else if (input.charAt(i) == 'A' || input.charAt(i) == 'a') {
                     for (int j = i; j < input.length(); j++) {
                         if (input.charAt(j) == '+') {

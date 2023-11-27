@@ -78,6 +78,7 @@ public class World {
                 }
             }
         }
+        int counter = 0;
         leftmost = 0;
         while (wqu.count() != 1) {
             for (int i = 0; i < roomNumbers; i++) {
@@ -87,8 +88,12 @@ public class World {
                 }
                 for (int j = 0; j < roomNumbers; j++) {
                     if (!wqu.connected(i, j)) {
+                        if (counter > 50) {
+                            break;
+                        }
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(j));
                         Hall.connectRoomToAnythingByHall(this, roomMap.get(i));
+                        counter++;
                     }
                 }
             }
