@@ -168,31 +168,32 @@ public class AutograderBuddy {
 
     public TETile[][] autoLoadGame() {
         File file = new File("C:\\Programs\\CS61B\\fa23-proj3-g232\\proj3\\saveGame.txt");
-        In in = new In(file);
-        String strSeed = in.readLine();
-        String positionStr = in.readLine();
-        String strAx = positionStr.split(",")[0];
-        String strAy = positionStr.split(",")[1];
-        String strLightsOff = in.readLine();
-        String aName = in.readLine();
+        if (file.exists()) {
+            In in = new In(file);
+            String strSeed = in.readLine();
+            String positionStr = in.readLine();
+            String strAx = positionStr.split(",")[0];
+            String strAy = positionStr.split(",")[1];
+            String strLightsOff = in.readLine();
+            String aName = in.readLine();
 
-        long seed1 = Long.parseLong(strSeed);
-        int aPosX = Integer.parseInt(strAx);
-        int aPosY = Integer.parseInt(strAy);
-        boolean lightsOff = Boolean.parseBoolean(strLightsOff);
+            long seed1 = Long.parseLong(strSeed);
+            int aPosX = Integer.parseInt(strAx);
+            int aPosY = Integer.parseInt(strAy);
+            boolean lightsOff = Boolean.parseBoolean(strLightsOff);
 
-        World world = new World(seed1);
-        Game game = new Game();
-        TETile avatar = new TETile('@', Color.white,
-                Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
-        world.getTiles()[aPosX][aPosY] = avatar;
-        world.setAvatarName(aName);
-        world.setLights(lightsOff); //must be done after making world
-        world.setAPos(new int[] {aPosX, aPosY});
-        return world.getTiles();
-        //game.runGame(world, 60, 30);
-        /*
-        else {
+            World world = new World(seed1);
+            Game game = new Game();
+            TETile avatar = new TETile('@', Color.white,
+                    Tileset.MyComponent.getColorAt(Tileset.MyComponent.getGradientPaint(), aPosX, aPosY), "you");
+            world.getTiles()[aPosX][aPosY] = avatar;
+            world.setAvatarName(aName);
+            world.setLights(lightsOff); //must be done after making world
+            world.setAPos(new int[]{aPosX, aPosY});
+            return world.getTiles();
+            //game.runGame(world, 60, 30);
+
+        } else {
             TETile[][] defaultTiles = new TETile[60][30];
             for (int x = 0; x < 60; x++) {
                 for (int p = 0; p < 30; p++) {
@@ -201,7 +202,7 @@ public class AutograderBuddy {
             }
             return defaultTiles;
         }
-         */
+
     }
 
     /**
