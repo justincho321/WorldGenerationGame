@@ -10,7 +10,7 @@ public class Main {
     private static final int HEIGHT = 30;
 
     public static void main(String[] args) {
-        //AutograderBuddy.getWorldFromInput("Ajustine+n102S");
+        //AutograderBuddy.getWorldFromInput("n1392967723524655428sddsaawwsaddw");
         //populate floorGradient array
 
         fG = new TETile[60][30];
