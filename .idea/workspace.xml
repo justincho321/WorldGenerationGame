@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3571eecd-de39-4fb0-80b8-e1f4e6e58010" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/library_fa23.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fa23-proj3-g232.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/AutograderBuddy.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Game.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/HUD.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Hall.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Light.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Menu.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Move.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/Room.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/core/World.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/tileengine/TERenderer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/tileengine/TETile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/tileengine/Tileset$MyComponent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/tileengine/Tileset.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/utils/FileUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/fa23-proj3-g232/utils/RandomUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/saveGame.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/Game.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/HUD.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/Hall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/Light.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/Move.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/core/Room.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proj3/src/gamelog/savedGame.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj3/src/core/AutograderBuddy.java" beforeDir="false" afterPath="$PROJECT_DIR$/proj3/src/core/AutograderBuddy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj3/src/core/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/proj3/src/core/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj3/src/core/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/proj3/src/core/World.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proj3/src/tileengine/Tileset.java" beforeDir="false" afterPath="$PROJECT_DIR$/proj3/src/tileengine/Tileset.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2YNkscFhdPNvQe5XWfyUgwhJTrv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging main",
+    "last_opened_file_path": "C:/Programs/CS61B/fa23-s1442/proj2b",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="core.Main" />
+      <module name="fa23-proj3-g232" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3571eecd-de39-4fb0-80b8-e1f4e6e58010" name="Changes" comment="" />
+      <created>1700373634240</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700373634240</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.NoSuchElementException" package="java.util" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="5" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

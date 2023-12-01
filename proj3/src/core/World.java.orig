@@ -8,8 +8,13 @@ import java.util.Random;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class World {
+<<<<<<< HEAD
+    private static int width = 60;
+    private static int height = 30;
+=======
     private int width = 60;
     private int height = 30;
+>>>>>>> Justin
     private TETile[][] tiles;
 
     private HashMap<Integer, Room> roomMap;
@@ -32,6 +37,36 @@ public class World {
     static final TETile NOTHING = Tileset.CUSTOM_NOTHING;
     private TETile avatar = Tileset.AVATAR;
 
+<<<<<<< HEAD
+    //object representation of a room
+    private class Room {
+        int num;
+        int startX;
+        int startY;
+        int width;
+        int height;
+
+        public Room(int num, int startX, int startY, int roomWidth, int roomHeight) {
+            this.num = num;
+            this.startX = startX;
+            this.startY = startY;
+            width = roomWidth;
+            height = roomHeight;
+        }
+    }
+
+    //temporary seed until can generate
+    private long SEED = 23758378;
+    //old seed: 23758373
+    private Random RANDOM = new Random(SEED);
+    public TETile[][] returnWorld(){
+        return tiles;
+    }
+
+    //WORLD CONSTRUCTOR
+    public World(long SEED) { //eugenia: world should take in the seed that puts out random rooms; NO static final
+        this.RANDOM = new Random(SEED);
+=======
     //private Tileset ts;
 
     //WORLD CONSTRUCTOR
@@ -44,12 +79,14 @@ public class World {
         Tileset ts = new Tileset();
         RANDOM = new Random(seed);
         //make tiles object and populate with nothing initially
+>>>>>>> Justin
         tiles = new TETile[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 tiles[x][y] = NOTHING;
             }
         }
+
         //populate and make randomized world helper method
         int roomNumbers = RANDOM.nextInt(10); // there should be 10 to 20 random rom
         roomNumbers += 10;
